@@ -1,0 +1,18 @@
+1:
+1. Project Title: GPS Tracking Android Application
+2. Group Members: Chen, George; Coffill, David; Eric
+He, Ziping (Point of Contact); Lang, Shuai; Wang, Xinzhe
+
+3. This application is intended to periodically record the phone's location and store it.  The user can later recall this information to see where they have been, and possibly tie information to locations based on this data. 
+
+We have also set up the development environments for Android devices on our computers.
+
+2:
+By the next deliverable, we would like to become a little more familiar with Android development and version control systems.
+
+We also plan to determine some of the technical aspects of the project, such as the necessary APIs to utilize.
+
+3:
+We are not extremely familiar with Android development.  Our plan to remedy this is to read more documentation.
+
+We would also like to consider additional features that would enrich our application.
