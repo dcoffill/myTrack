@@ -11,7 +11,7 @@ We also hope to have at least a nontrivial amount of the user interface complete
 3. What are your group's current problems and plans for solving them, if any?
 Because none of us have previously done Android development, we are unfamiliar with most aspects of Android development, from APIs to the development process.
 
-We plan to solve this by further familiarizing ourselves with the Android documentation in an ongoing process that will last throughout the duration of our project.
+We plan to solve this by further familiarizing ourselves with the Android documentation in an ongoing process that will last throughout the duration of our project. We are currently reading through UI documentation so we will be familiar with creating graphical interfaces.
 
 4. Do you have any other comments?
 
