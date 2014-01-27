@@ -10,4 +10,34 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="pref_syncConnectionTypes_entries">
+        <item>Dwight D. Eisenhower</item>
+        <item>John F. Kennedy</item>
+        <item>Lyndon B. Johnson</item>
+        <item>Richard Nixon</item>
+        <item>Gerald Ford</item>
+        <item>Jimmy Carter</item>
+        <item>Ronald Reagan</item>
+        <item>George H. W. Bush</item>
+        <item>Bill Clinton</item>
+        <item>George W. Bush</item>
+        <item>Barack Obama</item>
+    </string-array>
+
+    <string-array name="pref_syncConnectionTypes_values">
+        <item>Dwight D. Eisenhower</item>
+        <item>John F. Kennedy</item>
+        <item>Lyndon B. Johnson</item>
+        <item>Richard Nixon</item>
+        <item>Gerald Ford</item>
+        <item>Jimmy Carter</item>
+        <item>Ronald Reagan</item>
+        <item>George H. W. Bush</item>
+        <item>Bill Clinton</item>
+        <item>George W. Bush</item>
+        <item>Barack Obama</item>
+    </string-array>
+
+
+
 </resources>
