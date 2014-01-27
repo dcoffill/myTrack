@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<SwitchPreference
+    android:key="pref_sync"
+    android:title="Tracking enabled"
+    android:summary="Periodically collect location"
+    android:defaultValue="true" />
+<ListPreference
+    android:dependency="pref_sync"
+    android:key="pref_syncConnectionType"
+    android:title="pref_syncConnectionType"
+    android:dialogTitle="/pref_syncConnectionType"
+    android:entries="@array/pref_syncConnectionTypes_entries"
+    android:entryValues="@array/pref_syncConnectionTypes_values"
+    android:defaultValue="/pref_syncConnectionTypes_default" />
+
+<EditTextPreference
+    android:dependency="pref_sync"
+    android:key="pref_syncConnectionType"
+    android:title="Refresh interval"
+    android:inputType="number"
+    android:dialogTitle="Enter time (minutes) to refresh"
+    android:maxLength="3"
+    android:defaultValue="10" />
+
 
 </PreferenceScreen>
