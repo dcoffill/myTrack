@@ -14,6 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    <!-- This really shouldn't be here!!!  But seeing as I don't know
+how to switch between UI fragments, this is a quick and dirty way to
+test UI elements without understanding that -->
+
+    <fragment android:id="@+id/action_settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.cs48.myTrack.SettingsFragment" />
+
+
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right
          languages and on the right side for right-to-left languages.
@@ -28,14 +39,6 @@
         android:name="com.cs48.myTrack.NavigationDrawerFragment" />
 
 
-    <!-- This really shouldn't be here!!!  But seeing as I don't know
-    how to switch between UI fragments, this is a quick and dirty way to
-    test UI elements without understanding that -->
-
-    <fragment android:id="@+id/action_settings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.cs48.myTrack.SettingsFragment" />
 
 
 </android.support.v4.widget.DrawerLayout>
