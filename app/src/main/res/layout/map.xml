@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- For now, this file does nothing, so don't worry about it.  In the future
+we may need it to control various aspects of the MapFragment.  Or it could be
+redundant, so we'll see... -->
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="com.google.android.gms.maps.MapFragment"/>

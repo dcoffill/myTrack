@@ -2,17 +2,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 <SwitchPreference
     android:key="pref_sync"
-    android:title="Tracking enabled"
-    android:summary="Periodically collect location"
+    android:title="@string/track_preference_title"
+	android:summaryOn="@string/track_preference_on"
+	android:summaryOff="@string/track_preference_off"
     android:defaultValue="true" />
 <ListPreference
     android:dependency="pref_sync"
     android:key="pref_syncConnectionType"
-    android:title="pref_syncConnectionType"
-    android:dialogTitle="/pref_syncConnectionType"
+    android:title="@string/pref_syncConnectionType"
+    android:dialogTitle="@string/pref_syncConnectionTypes_default"
     android:entries="@array/pref_syncConnectionTypes_entries"
     android:entryValues="@array/pref_syncConnectionTypes_values"
-    android:defaultValue="/pref_syncConnectionTypes_default" />
+    android:defaultValue="@string/pref_syncConnectionTypes_default" />
 
 <EditTextPreference
     android:dependency="pref_sync"

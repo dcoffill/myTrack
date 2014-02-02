@@ -19,6 +19,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -51,9 +57,40 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+        switch (position) {
+            case 0:
+				// If first drawer option is chosen, create a new map fragment and switch to it
+				// Unfortunately this means every time we switch to it, a new MapFragment is created
+				// And as such, we lose things like previous map position
+                MapFragment myMap = new MapFragment();
+                fragmentManager.beginTransaction()
+                    .replace(R.id.container, myMap)
+                    .commit();
+                // Ignore for now.  If you uncomment this, the app will break!!!
+                // Eventually this should hopefully give us control over various aspects of the map
+                // such as where the camera is looking, adding new markers to the map, etc.
+//                MapFragment myMapFragment = (MapFragment)fragmentManager.findFragmentById(R.id.map);
+//                GoogleMap myGoogleMap = myMapFragment.getMap();
+//                LatLngBounds australia = new LatLngBounds(new LatLng(-44, 113), new LatLng(-10, 154));
+//                myGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(australia.getCenter(), 10));
+
+
+                break;
+            case 1:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .commit();
+            case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .commit();
+
+            default:
+                break;
+        }
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+//                .commit();
     }
 
     public void onSectionAttached(int number) {
@@ -98,11 +135,6 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-//            SettingsFragment settings = new SettingsFragment();
-//            FragmentManager fragmentManager = getFragmentManager();
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.container, settings)
-//                    .commit();
             Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
         }

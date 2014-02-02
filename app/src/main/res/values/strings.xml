@@ -7,8 +7,17 @@
     <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
+    <string name="action_example">Record Location</string>
     <string name="action_settings">Settings</string>
+
+	<string name="track_preference_title">Automatic Tracking</string>
+	<string name="track_preference_on">Automatic tracking</string>
+	<string name="track_preference_off">Manual tracking only</string>
+	<string name="pref_syncConnectionType">This is a ListPreference!</string>
+	<string name="pref_syncConnectionTypes_default">Presidents or something</string>
+
+
+
 
     <string-array name="pref_syncConnectionTypes_entries">
         <item>Dwight D. Eisenhower</item>
