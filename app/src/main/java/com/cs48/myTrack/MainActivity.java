@@ -66,6 +66,7 @@ public class MainActivity extends Activity
                 fragmentManager.beginTransaction()
                     .replace(R.id.container, myMap)
                     .commit();
+                mTitle = getString(R.string.title_section1);
                 // Ignore for now.  If you uncomment this, the app will break!!!
                 // Eventually this should hopefully give us control over various aspects of the map
                 // such as where the camera is looking, adding new markers to the map, etc.
@@ -80,11 +81,12 @@ public class MainActivity extends Activity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                         .commit();
+                mTitle = getString(R.string.title_section2);
             case 2:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                         .commit();
-
+                mTitle = getString(R.string.title_section3);
             default:
                 break;
         }
