@@ -1,29 +1,24 @@
 package com.cs48.myTrack;
 
-import android.app.Activity;
-;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
+
+;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -55,6 +50,9 @@ public class MainActivity extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        View myView = findViewById(R.id.container);
+        ListView listView;
+        String myStringArray [] = {"Location Info1","Location Info2","Location Info3"};
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
@@ -78,10 +76,29 @@ public class MainActivity extends Activity
 
                 break;
             case 1:
+                // Get ListView object from xml
+                listView = (ListView) findViewById(R.id.list);
+
+                //Create a ListFragment
+                MyListFragment myList = new MyListFragment();
+
+                // Define a new Adapter
+                // First parameter - Context
+                // Second parameter - Layout for the row
+                // Third parameter - ID of the TextView to which the data is written
+                // Forth - the Array of data
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_list_item_1, myStringArray);
+                // Assign adapter to ListFragment
+                myList.setListAdapter(adapter);
+
+
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .replace(R.id.container, myList)
                         .commit();
                 mTitle = getString(R.string.title_section2);
+
+                break;
             case 2:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
