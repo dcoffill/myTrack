@@ -49,7 +49,11 @@ public class MainActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        String myStringArray [] = {"Location Info1","Location Info2","Location Info3","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4"};
+        String myStringArray [] = new String[60];//{"Location Info1","Location Info2","Location Info3","Location Info4","Location Info5","Location Info6","Location Info7","Location Info8","Location Info9","Location Info10","Location Info","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4"};
+        for(int i=0;i<60;i++)
+            myStringArray[i]="Location Info"+(i+1);
+
+
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
