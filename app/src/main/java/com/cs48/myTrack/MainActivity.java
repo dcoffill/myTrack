@@ -15,7 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 
 public class MainActivity extends Activity
@@ -57,14 +61,16 @@ public class MainActivity extends Activity
 				// If first drawer option is chosen, create a new map fragment and switch to it
 				// Unfortunately this means every time we switch to it, a new MapFragment is created
 				// And as such, we lose things like previous map position
-                MapFragment myMap = new MapFragment();
+                MTMapFragment myMap = new MTMapFragment();
                 fragmentManager.beginTransaction()
                     .replace(R.id.container, myMap)
                     .commit();
                 mTitle = getString(R.string.title_section1);
+
                 // Ignore for now.  If you uncomment this, the app will break!!!
                 // Eventually this should hopefully give us control over various aspects of the map
                 // such as where the camera is looking, adding new markers to the map, etc.
+
 //                MapFragment myMapFragment = (MapFragment)fragmentManager.findFragmentById(R.id.map);
 //                GoogleMap myGoogleMap = myMapFragment.getMap();
 //                LatLngBounds australia = new LatLngBounds(new LatLng(-44, 113), new LatLng(-10, 154));
