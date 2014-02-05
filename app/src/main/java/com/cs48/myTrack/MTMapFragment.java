@@ -24,6 +24,7 @@ public class MTMapFragment extends MapFragment {
 
 	@Override
 	public void onStart() {
+		super.onStart();
 		myMap = super.getMap();
 	}
 
