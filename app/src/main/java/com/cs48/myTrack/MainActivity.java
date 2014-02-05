@@ -13,12 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 
-;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -50,9 +48,8 @@ public class MainActivity extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        View myView = findViewById(R.id.container);
-        ListView listView;
-        String myStringArray [] = {"Location Info1","Location Info2","Location Info3"};
+
+        String myStringArray [] = {"Location Info1","Location Info2","Location Info3","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4"};
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
@@ -77,7 +74,6 @@ public class MainActivity extends Activity
                 break;
             case 1:
                 // Get ListView object from xml
-                listView = (ListView) findViewById(R.id.list);
 
                 //Create a ListFragment
                 MyListFragment myList = new MyListFragment();
