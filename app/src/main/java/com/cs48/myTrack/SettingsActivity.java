@@ -10,10 +10,17 @@ import android.view.MenuItem;
 /**
  * Created by david on 1/31/14.
  */
+
+/*
+Activity intended to hold SettingsFragment only.  This is a separate activity so that the navigation
+drawer is not accessible from this screen.
+ */
 public class SettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+		// Show SettingsFragment as the main view
         setContentView(R.layout.activity_settings);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
