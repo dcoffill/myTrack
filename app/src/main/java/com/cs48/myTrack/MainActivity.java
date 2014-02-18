@@ -52,9 +52,6 @@ public class MainActivity extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
-	// Ensure we only create one MapFragment and keep using it, rather than resetting it each time
-	// we call it
-	public final static MTMapFragment myMap = new MTMapFragment();
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -72,7 +69,7 @@ public class MainActivity extends Activity
 				// And as such, we lose things like previous map position
 				// Possibly can be fixed using the backStack or onResume methods, will have to
 				// investigate further
-//                MTMapFragment myMap = new MTMapFragment();
+                MTMapFragment myMap = new MTMapFragment();
                 fragmentManager.beginTransaction()
                     .replace(R.id.container, myMap)
                     .commit();
