@@ -4,6 +4,8 @@ package com.cs48.myTrack;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -58,6 +62,10 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    private Location mCurrentLocation;
+
+    private int has_the_table_been_created = 0;
+
     public NavigationDrawerFragment() {
     }
 
@@ -74,7 +82,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
     }
@@ -248,6 +255,17 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
+            //might be a problem here by getActivity()
+            mCurrentLocation = ((MainActivity)getActivity()).getLocation();
+            LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
+            //not sure need or not
+            /**if(has_the_table_been_created==0){
+            DatabaseHelper dh = new DatabaseHelper(getActivity());
+            SQLiteDatabase sd = dh.getReadableDatabase();
+            has_the_table_been_created++;
+            }*/
+            DatabaseHelper dh = new DatabaseHelper(getActivity());
+            dh.addLocation(mLocationInfo);
             Toast.makeText(getActivity(), "Recording Location", Toast.LENGTH_SHORT).show();
             return true;
         }
