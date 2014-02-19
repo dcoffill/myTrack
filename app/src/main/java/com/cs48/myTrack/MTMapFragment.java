@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -27,25 +28,6 @@ public class MTMapFragment extends MapFragment {
 
 	MTMapFragment() {
 		super();
-		MTLocation l1 = new MTLocation("1");
-		l1.setLatitude(10);
-		l1.setLongitude(-10);
-		l1.setTime((long)(1392178482l * 1000l));
-
-		MTLocation l2 = new MTLocation("2");
-		l2.setLatitude(10);
-		l2.setLongitude(10);
-		l2.setTime((long)(1392078422l * 1000l));
-
-		MTLocation l3 = new MTLocation("3");
-		l3.setLatitude(10);
-		l3.setLongitude(50);
-		l3.setTime((long)(1292178482l * 1000l));
-		list.add(l1);
-		list.add(l2);
-		list.add(l3);
-
-
 
 	}
 
@@ -77,18 +59,23 @@ public class MTMapFragment extends MapFragment {
 			gMap = this.getMap();
 		}
 
-		// Creates a marker
-		gMap.addMarker(new MarkerOptions()
-			.position(new LatLng(34.3147, -119.8606))
-			.title("Isla Vista!"));
-
-		for (MTLocation location: list) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTimeInMillis((long)location.getTime());
+//		for (MTLocation location: list) {
+//			Calendar cal = Calendar.getInstance();
+//			cal.setTimeInMillis((long)location.getTime());
+//			gMap.addMarker(new MarkerOptions()
+//				.position(new LatLng(location.getLatitude(), location.getLongitude()))
+//				.title(" Location #" + location.getProvider())
+//				.snippet(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH)));
+//		}
+		DatabaseHelper dh = new DatabaseHelper(getActivity());
+		List<LocationInfo> liList= dh.getAllLocations();
+		int j = 0;
+		for (LocationInfo location: liList) {
 			gMap.addMarker(new MarkerOptions()
-				.position(new LatLng(location.getLatitude(), location.getLongitude()))
-				.title(" Location #" + location.getProvider())
-				.snippet(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH)));
+				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
+				.title("Location #" + j)
+				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()));
+			++j;
 		}
 
 //		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
