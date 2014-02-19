@@ -147,7 +147,7 @@ public class MainActivity extends Activity implements
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        Toast.makeText(this, "Connected to Google Services", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Google Services Connected", Toast.LENGTH_SHORT).show();
 
     }
 
