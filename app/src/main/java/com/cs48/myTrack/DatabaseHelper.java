@@ -137,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Getting locations Count
-    public int getLocationInfoCount() {
+    public int getLocationsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_INFO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);

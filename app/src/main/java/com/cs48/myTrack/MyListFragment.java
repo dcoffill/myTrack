@@ -18,7 +18,7 @@ public class MyListFragment extends ListFragment{
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
         super.onListItemClick(l, v, pos, id);
-        Toast.makeText(getActivity(), "Location " + (pos+1) + " was loaded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Location loaded successfully", Toast.LENGTH_SHORT).show();
     }
 
 }

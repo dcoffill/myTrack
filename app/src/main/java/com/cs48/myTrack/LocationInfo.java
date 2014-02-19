@@ -8,9 +8,9 @@ import android.location.Location;
 public class LocationInfo {
 
     //private variables
-    int _id;
-    Double _latitude;
-    Double _longitude;
+    private int _id;
+    private Double _latitude;
+    private Double _longitude;
 
     // Empty constructor
     public LocationInfo(){
