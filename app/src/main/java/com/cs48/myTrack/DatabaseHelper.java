@@ -1,14 +1,13 @@
 package com.cs48.myTrack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Derek on 14-2-16.
@@ -138,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Getting locations Count
-    public int getLocationInfosCount() {
+    public int getLocationInfoCount() {
         String countQuery = "SELECT  * FROM " + TABLE_INFO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
