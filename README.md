@@ -14,6 +14,11 @@ In order to develop and build myTrack, you must install Android studio[1] 0.4.0 
 In addition, this application will not run correctly (maps will not work, application may force close) unless the proper signing key is used in the build process (as only .apk files generated and signed by approved keys will work with the Google Maps Android API).  If you do not have an existing Android environment whose keys you care about, the easiest way to do this is to copy the debug.keystore file to the proper location on your environment [4].
 
 
+Known Bugs
+----------
+* MTMapFragment doesn't refresh on its own.  If new locations are added, they will not display on the map until the fragment is reloaded.  You can force the fragment to reload (and subsequently display any new locations) by reloading the application, switching to another application and switching back, or switching between other activities/fragments within the application.
+
+
 Resource links
 --------------
 
