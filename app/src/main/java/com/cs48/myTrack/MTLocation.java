@@ -5,13 +5,9 @@ import android.location.Location;
 import java.io.Serializable;
 
 /**
- * Created by david on 2/9/14.
- */
-
-/*
-This class is responsible for storing attributes of a given recorded location, such as date/time,
-geographic coordinates, bearing, altitude, and more.  See
-https://developer.android.com/reference/android/location/Location.html for more information
+ *This class is responsible for storing attributes of a given recorded location, such as date/time,
+ *geographic coordinates, bearing, altitude, and more.  See
+ *https://developer.android.com/reference/android/location/Location.html for more information
  */
 public class MTLocation extends Location implements Serializable {
 	private String description;

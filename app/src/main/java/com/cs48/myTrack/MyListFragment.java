@@ -7,7 +7,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 /**
- * Created by Administrator on 14-2-4.
+ * A simple fragment that displays locations in a list format
  */
 public class MyListFragment extends ListFragment{
     @Override

@@ -3,7 +3,8 @@ package com.cs48.myTrack;
 import android.location.Location;
 
 /**
- * Created by samsung on 14-2-16.
+ * A class that stores information about a given location.  Currently used to interface with the
+ * DatabaseHelper
  */
 public class LocationInfo {
 

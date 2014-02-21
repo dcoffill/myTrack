@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Derek on 14-2-16.
+ * A class that provides an easy, consistent interface to the SQLite database responsible for
+ * storing location information
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by david on 2/4/14.
+ * A fragment that builds on top of Google's MapFragment to display an interactive map
  */
 public class MTMapFragment extends MapFragment {
 	private GoogleMap gMap;
