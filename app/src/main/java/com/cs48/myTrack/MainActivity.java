@@ -289,7 +289,7 @@ public class MainActivity extends Activity implements
                 }
 
                 //Create a ListFragment
-                MyListFragment myList = new MyListFragment();
+                MTListFragment myList = new MTListFragment();
 
                 // Define a new Adapter
                 // First parameter - Context

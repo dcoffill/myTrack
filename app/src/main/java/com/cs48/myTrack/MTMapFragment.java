@@ -1,23 +1,11 @@
 package com.cs48.myTrack;
 
-import android.location.Location;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Marker;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A fragment that builds on top of Google's MapFragment to display an interactive map
@@ -86,3 +74,4 @@ public class MTMapFragment extends MapFragment {
 
 	}
 }
+

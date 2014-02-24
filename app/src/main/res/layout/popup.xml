@@ -7,39 +7,25 @@
     android:background="@android:color/background_light"
     android:weightSum="1">
     <RelativeLayout
-        android:layout_width="236dp"
-        android:layout_height="87dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="7dp"
         android:background="@android:color/background_light"
-        android:layout_weight="0.05">
+        android:layout_weight="0.11">
 
         <EditText
-            android:id="@+id/editText"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/popup_hint"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/editText2"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="@string/popup_cancelButtonText"
-            android:layout_below="@+id/editText"
+            android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="@string/popup_addButtonText"
-            android:id="@+id/add"
-            android:layout_below="@+id/editText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentEnd="true"
+            android:hint="@string/popup_hint" />
 
     </RelativeLayout>
 
