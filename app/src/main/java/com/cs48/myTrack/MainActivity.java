@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -48,6 +50,7 @@ public class MainActivity extends Activity implements
      */
     private CharSequence mTitle;
 
+	private Intent mServiceIntent;
 
     // Global constants
     /*
@@ -203,7 +206,12 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+		// Create background service
+		mServiceIntent = new Intent(this, LocationBackgroundService.class);
+		mServiceIntent.setData(Uri.parse("test_because_i_don't_know_what_goes_here"));
+		this.startService(mServiceIntent);
+
+		mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
