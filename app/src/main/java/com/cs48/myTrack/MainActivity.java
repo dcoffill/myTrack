@@ -264,6 +264,9 @@ public class MainActivity extends Activity implements
             // Writing LocationInfos to log
             Log.d("Name: ", log);
         }
+        //delete all data in database
+        db.deleteAllLocations();
+
         //end test----------------------------------------------------------------------------------------------------------------------
     }
 
