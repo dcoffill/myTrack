@@ -25,6 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // table name
     private static final String TABLE_INFO = "infoDesk";
 
+    // date index for table info
+    private static final String IDX_TABLE_INFO_LOCATION = "index_date";
+
     // LocationInfos Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_LATITUDE = "latitude";
@@ -38,9 +41,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_INFO_TABLE = "CREATE TABLE " + TABLE_INFO + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LATITUDE + " TEXT,"
+                + KEY_ID + " TEXT," + KEY_LATITUDE + " TEXT,"
                 + KEY_LONGITUDE + " TEXT" + ")";
+        //String CREATE_INFO_TABLE_INDEX = "CREATE INDEX" + IDX_TABLE_INFO_LOCATION + "ON" + TABLE_INFO + "(" + KEY_ID + ")";
         db.execSQL(CREATE_INFO_TABLE);
+        //db.execSQL(CREATE_INFO_TABLE_INDEX);
     }
 
     // Upgrading database
@@ -136,7 +141,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
+    // Deleting all location
+    public void deleteAllLocations() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_INFO, null, null);
+        db.close();
+    }
     // Getting locations Count
     public int getLocationsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_INFO;
