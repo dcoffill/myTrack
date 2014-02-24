@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
 /**
- * Created by david on 1/26/14.
+ * A simple fragment that extends PreferenceFragment.  This serves as a settings interface for the
+ * application
  */
 
-/*
-A simple fragment that extends PreferenceFragment.  This serves as a settings interface for the
-application
- */
 public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {

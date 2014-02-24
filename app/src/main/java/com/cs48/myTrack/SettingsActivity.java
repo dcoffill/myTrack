@@ -6,14 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-
 /**
- * Created by david on 1/31/14.
- */
-
-/*
-Activity intended to hold SettingsFragment only.  This is a separate activity so that the navigation
-drawer is not accessible from this screen.
+ * Activity intended to hold SettingsFragment only.  This is a separate activity so that the navigation
+ * drawer is not accessible from this screen.
  */
 public class SettingsActivity extends Activity {
     @Override
