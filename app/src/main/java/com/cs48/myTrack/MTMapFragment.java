@@ -58,14 +58,16 @@ public class MTMapFragment extends MapFragment {
 		DatabaseHelper dh = new DatabaseHelper(getActivity());
 		List<LocationInfo> liList= dh.getAllLocations();
 		int j = 0;
+		PolylineOptions newLine = new PolylineOptions();
 		for (LocationInfo location: liList) {
 			gMap.addMarker(new MarkerOptions()
 				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
 				.title("Location #" + j)
 				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()));
+			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
 			++j;
 		}
-
+		Polyline polyline = gMap.addPolyline(newLine);
 //		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
 //		// annoying how it re-centers every time you even switch apps...
 //		gMap = super.getMap();
