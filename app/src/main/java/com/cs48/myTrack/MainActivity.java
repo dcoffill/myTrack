@@ -27,6 +27,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -280,6 +281,7 @@ public class MainActivity extends Activity implements
                 // Get data from the database and store them in an ArrayList
                 DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
                 List<LocationInfo> locationInfoList =  dbHelper.getAllLocations();
+                Collections.reverse(locationInfoList);
                 ArrayList<String> myListTitles = new ArrayList<String>();
 
                 for(LocationInfo locInfo:locationInfoList){
