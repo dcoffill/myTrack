@@ -9,9 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
-/**
- * Created by Administrator on 14-2-23.
- */
 public class MTPopupDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
