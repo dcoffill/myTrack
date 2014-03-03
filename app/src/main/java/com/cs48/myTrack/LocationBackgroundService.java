@@ -3,10 +3,7 @@ package com.cs48.myTrack;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.location.Criteria;
 import android.location.Location;
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -36,7 +33,7 @@ public class LocationBackgroundService extends IntentService implements
 	// service, so change it back to false if you commit
 
 
-	LocationBackgroundService() {
+	public LocationBackgroundService() {
 		super("Background Location Service");
 	}
 
