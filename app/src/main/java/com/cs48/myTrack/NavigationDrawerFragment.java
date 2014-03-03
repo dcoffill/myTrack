@@ -1,16 +1,18 @@
 package com.cs48.myTrack;
 
-import android.app.ActionBar;
+;
 import android.app.Activity;
+import android.app.ActionBar;
 import android.app.Fragment;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,8 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -108,7 +110,8 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.id.text1,
                 new String[]{
                         getString(R.string.title_section1),
-                        getString(R.string.title_section2)
+                        getString(R.string.title_section2),
+                        getString(R.string.title_section3),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -252,18 +255,18 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            //might be a problem here by getActivity()
             mCurrentLocation = ((MainActivity)getActivity()).getLocation();
             LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
-            //not sure need or not
-            /*if(has_the_table_been_created==0){
             DatabaseHelper dh = new DatabaseHelper(getActivity());
-            SQLiteDatabase sd = dh.getReadableDatabase();
-            has_the_table_been_created++;
-            }*/
-            DatabaseHelper dh = new DatabaseHelper(getActivity());
-            dh.addLocation(mLocationInfo);
-            Toast.makeText(getActivity(), "Location Recorded", Toast.LENGTH_SHORT).show();
+            //the if statement check if tiem exist in table
+            if (dh.timeCheck(mLocationInfo)){
+                //when there is no same time exist in table
+                dh.addLocation(mLocationInfo);
+                Toast.makeText(getActivity(), "Recording Location", Toast.LENGTH_SHORT).show();
+            }else{
+                //when there is a same time exist in table
+                Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
