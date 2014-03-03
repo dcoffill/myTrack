@@ -310,11 +310,11 @@ public class MainActivity extends Activity implements
                 mTitle = getString(R.string.title_section2);
 
                 break;
-            case 2:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                        .commit();
-                mTitle = getString(R.string.title_section3);
+//            case 2:
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+//                        .commit();
+//                mTitle = getString(R.string.title_section3);
             default:
                 break;
         }
@@ -331,9 +331,9 @@ public class MainActivity extends Activity implements
             case 2:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+//            case 3:
+//                mTitle = getString(R.string.title_section3);
+//                break;
         }
     }
 
