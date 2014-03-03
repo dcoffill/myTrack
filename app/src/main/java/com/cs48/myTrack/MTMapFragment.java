@@ -1,23 +1,14 @@
 package com.cs48.myTrack;
 
-import android.location.Location;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A fragment that builds on top of Google's MapFragment to display an interactive map
@@ -70,14 +61,20 @@ public class MTMapFragment extends MapFragment {
 		DatabaseHelper dh = new DatabaseHelper(getActivity());
 		List<LocationInfo> liList= dh.getAllLocations();
 		int j = 0;
+		PolylineOptions newLine = new PolylineOptions();
 		for (LocationInfo location: liList) {
 			gMap.addMarker(new MarkerOptions()
 				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
 				.title("Location #" + j)
 				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()));
+			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
 			++j;
 		}
+		Polyline polyline = gMap.addPolyline(newLine);
 
+        LocationInfo tmpLocation = liList.get(0);
+        LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,18));
 //		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
 //		// annoying how it re-centers every time you even switch apps...
 //		gMap = super.getMap();
@@ -86,3 +83,4 @@ public class MTMapFragment extends MapFragment {
 
 	}
 }
+
