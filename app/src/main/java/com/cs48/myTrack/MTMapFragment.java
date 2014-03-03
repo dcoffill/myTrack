@@ -1,5 +1,6 @@
 package com.cs48.myTrack;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -70,6 +71,10 @@ public class MTMapFragment extends MapFragment {
 			++j;
 		}
 		Polyline polyline = gMap.addPolyline(newLine);
+
+        LocationInfo tmpLocation = liList.get(0);
+        LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,18));
 //		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
 //		// annoying how it re-centers every time you even switch apps...
 //		gMap = super.getMap();
