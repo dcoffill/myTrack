@@ -242,12 +242,15 @@ public class MainActivity extends Activity implements
 
         mLocationClient = new LocationClient(this, this, this);
 
+/*
         //Test database--------------------------------------------------------------------------------------------------------------
         DatabaseHelper db = new DatabaseHelper(this);
 
-        /**
+        */
+/**
          * CRUD Operations
-         * */
+         * *//*
+
         // Inserting LocationInfos
         Log.d("Insert: ", "Inserting ..");
         db.addLocation(new LocationInfo(1,1.111,1.112));
@@ -260,14 +263,15 @@ public class MainActivity extends Activity implements
         List<LocationInfo> locations = db.getAllLocations();
 
         for (LocationInfo cn : locations) {
-            String log = "Id: "+cn.getID()+" ,latitude: " + cn.get_Latitude() + " ,longitude: " + cn.get_Longitude();
+            String log = "Time: "+cn.getTime()+" ,latitude: " + cn.get_Latitude() + " ,longitude: " + cn.get_Longitude();
             // Writing LocationInfos to log
             Log.d("Name: ", log);
         }
         //delete all data in database
-        db.deleteAllLocations();
+        //db.deleteAllLocations();
 
         //end test----------------------------------------------------------------------------------------------------------------------
+*/
     }
 
     @Override

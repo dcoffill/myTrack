@@ -255,18 +255,18 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_example) {
-            //might be a problem here by getActivity()
             mCurrentLocation = ((MainActivity)getActivity()).getLocation();
             LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
-            //not sure need or not
-            /**if(has_the_table_been_created==0){
             DatabaseHelper dh = new DatabaseHelper(getActivity());
-            SQLiteDatabase sd = dh.getReadableDatabase();
-            has_the_table_been_created++;
-            }*/
-            DatabaseHelper dh = new DatabaseHelper(getActivity());
-            dh.addLocation(mLocationInfo);
-            Toast.makeText(getActivity(), "Recording Location", Toast.LENGTH_SHORT).show();
+            //the if statement check if tiem exist in table
+            if (dh.timeCheck(mLocationInfo)){
+                //when there is no same time exist in table
+                dh.addLocation(mLocationInfo);
+                Toast.makeText(getActivity(), "Recording Location", Toast.LENGTH_SHORT).show();
+            }else{
+                //when there is a same time exist in table
+                Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 

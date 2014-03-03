@@ -8,17 +8,20 @@ import android.location.Location;
 public class LocationInfo {
 
     //private variables
-    private int _id;
+    private long _time;
     private Double _latitude;
     private Double _longitude;
+    private String _description;
+
+    //These constructor will cause potential error since we are using time as unique key, be carefully and know how time is set in each constructor
 
     // Empty constructor
     public LocationInfo(){
 
     }
     // constructor
-    public LocationInfo(int id, Double latitude, Double longitude){
-        this._id = id;
+    public LocationInfo(long time, Double latitude, Double longitude){
+        this._time = time;
         this._latitude = latitude;
         this._longitude = longitude;
     }
@@ -31,17 +34,28 @@ public class LocationInfo {
 
     // constructor
     public LocationInfo(Location location){
+        this._time = location.getTime();
         this._latitude = location.getLatitude();
         this._longitude = location.getLongitude();
     }
-    // getting ID
-    public int getID(){
-        return this._id;
+    // getting Time
+    public long getTime(){
+        return this._time;
     }
 
-    // setting id
-    public void setID(int id){
-        this._id = id;
+    // setting time
+    public void setTime(long time){
+        this._time = time;
+    }
+
+    // getting Description
+    public String get_Description(){
+        return this._description;
+    }
+
+    // setting Description
+    public void set_Description(String d){
+        this._description = d;
     }
 
     // getting latitude
