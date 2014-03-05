@@ -1,15 +1,13 @@
 package com.cs48.myTrack;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Derek on 14-2-16.
@@ -81,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    //Test if the time is already exist
+    //Test whether current location is qualified to be added(no same location (i.e.time) exists)
     public  boolean timeCheck(LocationInfo location){
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_INFO;
@@ -89,6 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery,null);
         //move the cursor to the last record
         cursor.moveToLast();
+        if (!cursor.moveToLast()){ //if the database is empty
+            return true;
+        }
         if(String.valueOf(location.getTime()).equals(cursor.getString(0))){
             return false;
         }else{

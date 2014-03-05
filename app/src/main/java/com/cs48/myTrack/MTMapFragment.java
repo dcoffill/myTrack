@@ -72,9 +72,20 @@ public class MTMapFragment extends MapFragment {
 		}
 		Polyline polyline = gMap.addPolyline(newLine);
 
-        LocationInfo tmpLocation = liList.get(0);
-        LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,18));
+        try{
+            LocationInfo tmpLocation = liList.get(0);
+            LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,17));
+        }catch(IndexOutOfBoundsException ex){
+//                LocationClient mLocationClient = new LocationClient(this,this,this)
+//                Location mCurrentLocation = ((MainActivity)getActivity()).getLocation();
+//                LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
+//                dh.addLocation(mLocationInfo);
+//                LocationInfo tmpLocation = liList.get(0);
+                LatLng cameraCtr = new LatLng(34.41,-119.84);
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,10));
+
+        }
 //		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
 //		// annoying how it re-centers every time you even switch apps...
 //		gMap = super.getMap();
