@@ -2,11 +2,16 @@ package com.cs48.myTrack;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,48 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Marker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 
-import android.content.IntentSender;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends Activity implements
@@ -130,7 +103,7 @@ public class MainActivity extends Activity implements
         }
     }
 
-    private boolean servicesConnected() {
+    public boolean servicesConnected() {
         // Check that Google Play services is available
         int resultCode =
                 GooglePlayServicesUtil.
@@ -144,7 +117,7 @@ public class MainActivity extends Activity implements
             return true;
             // Google Play services was not available for some reason
         } else {
-            /**
+            /*
             // Get the error code
             int errorCode = connectionResult.getErrorCode();
             // Get the error dialog from Google Play services
@@ -176,7 +149,7 @@ public class MainActivity extends Activity implements
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Google Services Connected", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -241,38 +214,7 @@ public class MainActivity extends Activity implements
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         mLocationClient = new LocationClient(this, this, this);
-
-/*
-        //Test database--------------------------------------------------------------------------------------------------------------
-        DatabaseHelper db = new DatabaseHelper(this);
-
-        */
-/**
-         * CRUD Operations
-         * *//*
-
-        // Inserting LocationInfos
-        Log.d("Insert: ", "Inserting ..");
-        db.addLocation(new LocationInfo(1,1.111,1.112));
-        db.addLocation(new LocationInfo(2,2.131,2.912));
-        db.addLocation(new LocationInfo(3,3.331,1.452));
-        db.addLocation(new LocationInfo(4,4.1441,4.512));
-
-        // Reading all locations
-        Log.d("Reading: ", "Reading all locations..");
-        List<LocationInfo> locations = db.getAllLocations();
-
-        for (LocationInfo cn : locations) {
-            String log = "Time: "+cn.getTime()+" ,latitude: " + cn.get_Latitude() + " ,longitude: " + cn.get_Longitude();
-            // Writing LocationInfos to log
-            Log.d("Name: ", log);
-        }
-        //delete all data in database
-        //db.deleteAllLocations();
-
-        //end test----------------------------------------------------------------------------------------------------------------------
-*/
-    }
+ }
 
     @Override
     protected void onStart() {
@@ -290,9 +232,9 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        String myStringArray [] = new String[60];//{"Location Info1","Location Info2","Location Info3","Location Info4","Location Info5","Location Info6","Location Info7","Location Info8","Location Info9","Location Info10","Location Info","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4"};
-        for(int i=0;i<60;i++)
-            myStringArray[i]="Location Info"+(i+1);
+//        String myStringArray [] = new String[60];//{"Location Info1","Location Info2","Location Info3","Location Info4","Location Info5","Location Info6","Location Info7","Location Info8","Location Info9","Location Info10","Location Info","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4"};
+//        for(int i=0;i<60;i++)
+//            myStringArray[i]="Location Info"+(i+1);
 
 
         // update the main content by replacing fragments
@@ -312,10 +254,20 @@ public class MainActivity extends Activity implements
 
                 break;
             case 1:
-                // Get ListView object from xml
+                // Get data from the database and store them in an ArrayList
+                DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
+                List<LocationInfo> locationInfoList =  dbHelper.getAllLocations();
+                Collections.reverse(locationInfoList);
+                ArrayList<String> myListTitles = new ArrayList<String>();
+
+                for(LocationInfo locInfo:locationInfoList){
+                    String tmpStr = "";
+                    tmpStr = "Latitude: "+(locInfo.get_Latitude().toString())+"\nLongitude: "+(locInfo.get_Longitude().toString());
+                    myListTitles.add(tmpStr);
+                }
 
                 //Create a ListFragment
-                MyListFragment myList = new MyListFragment();
+                MTListFragment myList = new MTListFragment();
 
                 // Define a new Adapter
                 // First parameter - Context
@@ -323,7 +275,7 @@ public class MainActivity extends Activity implements
                 // Third parameter - ID of the TextView to which the data is written
                 // Forth - the Array of data
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                        android.R.layout.simple_list_item_1, myStringArray);
+                        android.R.layout.simple_list_item_1, myListTitles);
                 // Assign adapter to ListFragment
                 myList.setListAdapter(adapter);
 
@@ -334,11 +286,11 @@ public class MainActivity extends Activity implements
                 mTitle = getString(R.string.title_section2);
 
                 break;
-            case 2:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                        .commit();
-                mTitle = getString(R.string.title_section3);
+//            case 2:
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+//                        .commit();
+//                mTitle = getString(R.string.title_section3);
             default:
                 break;
         }
@@ -355,9 +307,9 @@ public class MainActivity extends Activity implements
             case 2:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+//            case 3:
+//                mTitle = getString(R.string.title_section3);
+//                break;
         }
     }
 
