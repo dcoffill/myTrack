@@ -110,7 +110,7 @@ public class MainActivity extends Activity implements
         }
     }
 
-    private boolean servicesConnected() {
+    public boolean servicesConnected() {
         // Check that Google Play services is available
         int resultCode =
                 GooglePlayServicesUtil.
@@ -124,7 +124,7 @@ public class MainActivity extends Activity implements
             return true;
             // Google Play services was not available for some reason
         } else {
-            /**
+            /*
             // Get the error code
             int errorCode = connectionResult.getErrorCode();
             // Get the error dialog from Google Play services
@@ -222,7 +222,7 @@ public class MainActivity extends Activity implements
 			Log.i("@@@@@", "Tracking Enabled!");
 		}
 
-		mNavigationDrawerFragment = (NavigationDrawerFragment)
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
@@ -232,31 +232,7 @@ public class MainActivity extends Activity implements
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         mLocationClient = new LocationClient(this, this, this);
-
-        //Test database--------------------------------------------------------------------------------------------------------------
-//        DatabaseHelper db = new DatabaseHelper(this);
-
-        /**
-         * CRUD Operations
-         * */
-        // Inserting LocationInfos
-//        Log.d("Insert: ", "Inserting ..");
-//        db.addLocation(new LocationInfo(1,1.111,1.112));
-//        db.addLocation(new LocationInfo(2,2.131,2.912));
-//        db.addLocation(new LocationInfo(3,3.331,1.452));
-//        db.addLocation(new LocationInfo(4,4.1441,4.512));
-//
-//        // Reading all locations
-//        Log.d("Reading: ", "Reading all locations..");
-//        List<LocationInfo> locations = db.getAllLocations();
-//
-//        for (LocationInfo cn : locations) {
-//            String log = "Id: "+cn.getID()+" ,latitude: " + cn.get_Latitude() + " ,longitude: " + cn.get_Longitude();
-//            // Writing LocationInfos to log
-//            Log.d("Name: ", log);
-//        }
-        //end test----------------------------------------------------------------------------------------------------------------------
-    }
+ }
 
     @Override
     protected void onStart() {
@@ -328,11 +304,11 @@ public class MainActivity extends Activity implements
                 mTitle = getString(R.string.title_section2);
 
                 break;
-            case 2:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                        .commit();
-                mTitle = getString(R.string.title_section3);
+//            case 2:
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+//                        .commit();
+//                mTitle = getString(R.string.title_section3);
             default:
                 break;
         }
@@ -349,9 +325,9 @@ public class MainActivity extends Activity implements
             case 2:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+//            case 3:
+//                mTitle = getString(R.string.title_section3);
+//                break;
         }
     }
 

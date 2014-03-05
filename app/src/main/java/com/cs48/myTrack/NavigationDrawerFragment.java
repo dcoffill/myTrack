@@ -109,7 +109,6 @@ public class NavigationDrawerFragment extends Fragment {
                 new String[]{
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
-                        getString(R.string.title_section3),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -256,15 +255,17 @@ public class NavigationDrawerFragment extends Fragment {
             //might be a problem here by getActivity()
             mCurrentLocation = ((MainActivity)getActivity()).getLocation();
             LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
-            //not sure need or not
-            /*if(has_the_table_been_created==0){
             DatabaseHelper dh = new DatabaseHelper(getActivity());
-            SQLiteDatabase sd = dh.getReadableDatabase();
-            has_the_table_been_created++;
-            }*/
-            DatabaseHelper dh = new DatabaseHelper(getActivity());
+            //the if statement check if item exist in table
+        if (dh.timeCheck(mLocationInfo)){
+            //when there is no same time exist in table
             dh.addLocation(mLocationInfo);
-            Toast.makeText(getActivity(), "Location Recorded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Location recorded", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            //when there is a same time exist in table
+            Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
+        }
             return true;
         }
 
