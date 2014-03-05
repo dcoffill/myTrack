@@ -2,9 +2,11 @@ package com.cs48.myTrack;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
@@ -43,6 +45,8 @@ public class MainActivity extends Activity implements
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private LocationClient mLocationClient;
+	AlarmReceiver alarm = new AlarmReceiver();
+
     public Location getLocation(){
         return mLocationClient.getLastLocation();
     }
@@ -208,9 +212,15 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
 		// Create background service
-		mServiceIntent = new Intent(this, LocationBackgroundService.class);
-		mServiceIntent.setData(Uri.parse("test_because_i_don't_know_what_goes_here"));
-		this.startService(mServiceIntent);
+//		mServiceIntent = new Intent(this, LocationBackgroundService.class);
+//		mServiceIntent.setData(Uri.parse("test_because_i_don't_know_what_goes_here"));
+//		this.startService(mServiceIntent);
+
+		boolean trackingEnabled = false; // Change to true then compile if you want to test background tracking
+		if (trackingEnabled) {
+			alarm.setAlarm(this);
+			Log.i("@@@@@", "Tracking Enabled!");
+		}
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);

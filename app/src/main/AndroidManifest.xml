@@ -32,8 +32,9 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
 		<service
-			android:name=".LocationBackgroundService"
+			android:name="com.cs48.myTrack.LocationBackgroundService"
 			android:exported="false"/>
 
         <meta-data android:name="com.google.android.gms.version"
@@ -43,8 +44,11 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBHYN7rUufyftUNp9aDFoanZGQBMmlB7Zo"/>
 
+		<receiver android:name="com.cs48.myTrack.AlarmReceiver"
+			android:enabled="true"/>
 
-    </application>
+
+	</application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -54,6 +58,7 @@
          Google Maps Android API v2, but are recommended. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>

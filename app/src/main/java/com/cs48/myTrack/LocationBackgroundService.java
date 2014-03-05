@@ -17,6 +17,9 @@ import com.google.android.gms.location.LocationRequest;
  * Created by david on 2/23/14
  * This is really bad, since it claims to implement several interfaces and then proceeds to not
  * do so.  But for now it's okay.
+ *
+ * This class is a background service that runs in the background, and records the location when
+ * it is invoked.
  */
 public class LocationBackgroundService extends IntentService implements
 		GooglePlayServicesClient.ConnectionCallbacks,
@@ -29,7 +32,7 @@ public class LocationBackgroundService extends IntentService implements
 	private final static int
 			CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	boolean trackingEnabled = false;  // Change this to true if you want the app to do automatic
-	// tracking.  Will probably destroy your battery life though, given the current state of the
+	// tracking.  May destroy your battery life though, given the current state of the
 	// service, so change it back to false if you commit
 
 
@@ -41,7 +44,9 @@ public class LocationBackgroundService extends IntentService implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Log.i("@@@@@", "Started LocationBackgroundService");
 		mLocationClient = new LocationClient(this, this, this);
+		mLocationClient.connect();
 
 		// Set parameters for the LocationClient to use when grabbing locations
 		mLocationRequest = LocationRequest.create();
@@ -54,6 +59,8 @@ public class LocationBackgroundService extends IntentService implements
 		// Location displacement set to greater than 50 meters, otherwise don't get new location
 		mLocationRequest.setSmallestDisplacement(50.0f);
 
+		mLocationClient.disconnect();
+
 	}
 
 	// Code that REQUIRES the LocationClient be ready should go here.  Ensures no
@@ -64,15 +71,28 @@ public class LocationBackgroundService extends IntentService implements
 		// installed doesn't destroy your battery life
 
 		if (trackingEnabled) {
-			mLocationClient.requestLocationUpdates(mLocationRequest, this);
+			if (mLocationClient.isConnected()) {
+				//mLocationClient.requestLocationUpdates(mLocationRequest, this);
+				LocationInfo mLocationInfo = new LocationInfo(mLocationClient.getLastLocation());
+				DatabaseHelper db = new DatabaseHelper(this);
+
+				// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
+				// special here with regards to locking
+				db.addLocation(mLocationInfo);
+				Log.i("-----", "Location recorded in background");
+			}
+			else {
+				Log.e("-----", "Error: Location client was not available to LocationBackgroundService");
+			}
 		}
-//		DatabaseHelper db = new DatabaseHelper(this);
-//
-//		// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
-//		// special here with regards to locking
-//		db.addLocation(mLocationInfo);
 
 		return;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mLocationClient.disconnect();
 	}
 
 	public void onDisconnected() {
@@ -86,6 +106,7 @@ public class LocationBackgroundService extends IntentService implements
 
 
 
+	// May not need anymore
 	@Override
 	protected void onHandleIntent(Intent workIntent) {
 
@@ -98,10 +119,12 @@ public class LocationBackgroundService extends IntentService implements
 			mLocation.setLatitude(10);
 			mLocation.setLongitude(20);
 		}
+		mLocationClient.disconnect();
 
 		return;
 	}
 
+	// May not need this anymore
 	@Override
 	public void onLocationChanged(Location location) {
 		// This method runs when the location is changed, as determined by requestLocationUpdates()
@@ -110,7 +133,7 @@ public class LocationBackgroundService extends IntentService implements
 		LocationInfo mLocationInfo = new LocationInfo(location);
 		DatabaseHelper db = new DatabaseHelper(this);
 		db.addLocation(mLocationInfo);
-		Log.i("-----", "Location added");
+		Log.i("-----", "Location added by distance");
 	}
 
 }
