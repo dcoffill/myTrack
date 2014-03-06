@@ -2,15 +2,12 @@ package com.cs48.myTrack;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
@@ -23,15 +20,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -277,11 +275,14 @@ public class MainActivity extends Activity implements
                 List<LocationInfo> locationInfoList =  dbHelper.getAllLocations();
                 Collections.reverse(locationInfoList);
                 ArrayList<String> myListTitles = new ArrayList<String>();
-
+                int tmpInt = 0;
                 for(LocationInfo locInfo:locationInfoList){
-                    String tmpStr = "";
-                    tmpStr = "Latitude: "+(locInfo.get_Latitude().toString())+"\nLongitude: "+(locInfo.get_Longitude().toString());
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String dateString = formatter.format(new Date(locInfo.getTime()));
+                    String tmpStr = "Location #"+(locationInfoList.size()-tmpInt)+": "+dateString;
+//                  tmpStr = "Latitude: "+(locInfo.get_Latitude().toString())+"\nLongitude: "+(locInfo.get_Longitude().toString());
                     myListTitles.add(tmpStr);
+                    ++tmpInt;
                 }
 
                 //Create a ListFragment
