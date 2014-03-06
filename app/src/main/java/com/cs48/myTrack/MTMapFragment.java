@@ -5,7 +5,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
@@ -65,15 +64,17 @@ public class MTMapFragment extends MapFragment {
 		for (LocationInfo location: liList) {
 			gMap.addMarker(new MarkerOptions()
 				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
-				.title("Location #" + j)
+				.title("Location #" + (j + 1))
 				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()));
 			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
 			++j;
 		}
-		Polyline polyline = gMap.addPolyline(newLine);
+		//Polyline polyline = gMap.addPolyline(newLine);
+        gMap.addPolyline(newLine);
+
 
         try{
-            LocationInfo tmpLocation = liList.get(0);
+            LocationInfo tmpLocation = liList.get(liList.size()-1);
             LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,17));
         }catch(IndexOutOfBoundsException ex){
@@ -83,7 +84,7 @@ public class MTMapFragment extends MapFragment {
 //                dh.addLocation(mLocationInfo);
 //                LocationInfo tmpLocation = liList.get(0);
                 LatLng cameraCtr = new LatLng(34.41,-119.84);
-                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,10));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,11));
 
         }
 //		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
