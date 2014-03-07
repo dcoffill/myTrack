@@ -144,24 +144,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return locationList;
     }
 
-/*    // Getting location by date, ex
-    public LocationInfo getLocation(int id) {
+   // Getting location by date, ex
+    public LocationInfo getLocationByTime(long time) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_INFO, new String[] { KEY_Time,
-                KEY_LATITUDE, KEY_LONGITUDE }, KEY_Time + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_INFO, new String[] { KEY_TIME,
+                KEY_LATITUDE, KEY_LONGITUDE, KEY_DESCRIPTION }, KEY_TIME + "=?",
+                new String[] { String.valueOf(time) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        LocationInfo location = new LocationInfo();
-        location.setTime(id);
-        location.set_Latitude(Double.parseDouble(cursor.getString(1)));
-        location.set_Longitude(Double.parseDouble(cursor.getString(2)));
-
-        // return location
-        return location;
-    }*/
+        LocationInfo locationInfo = new LocationInfo();
+        locationInfo.setTime(time);
+        locationInfo.set_Latitude(Double.parseDouble(cursor.getString(1)));
+        locationInfo.set_Longitude(Double.parseDouble(cursor.getString(2)));
+        locationInfo.set_Description(cursor.getString(3));
+        // return locationInfo
+        return locationInfo;
+}
 
     // Getting ?? newest locations, warning: less rows in db than required amount may cause problem
     // I'm still working on this method, incomplete state
