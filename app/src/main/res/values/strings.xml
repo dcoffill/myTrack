@@ -15,11 +15,11 @@
 	<string name="pref_syncConnectionType">This is a ListPreference!</string>
 	<string name="pref_syncConnectionTypes_default">Presidents or something</string>
 
-    <string name="popup_hint">Add Description</string>
+    <string name="popup_hint">Add Descriptions Here</string>
     <string name="popup_cancelButtonText">Cancel</string>
     <string name="popup_addButtonText">Add</string>
     <string name="popup_deleteButtonText">Delete</string>
-    <string name="popup_title">Add description</string>
+    <string name="popup_title">Add Description/Delete Location</string>
 
 
     <string-array name="pref_syncConnectionTypes_entries">
