@@ -137,12 +137,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 location.setTime(Long.parseLong(cursor.getString(0)));
                 location.set_Latitude(Double.parseDouble(cursor.getString(1)));
                 location.set_Longitude(Double.parseDouble(cursor.getString(2)));
+                location.set_Description(cursor.getString(3));
                 // Adding location to list
                 locationList.add(location);
             } while (cursor.moveToNext());
         }
 
-        // return location list
         return locationList;
     }
 
