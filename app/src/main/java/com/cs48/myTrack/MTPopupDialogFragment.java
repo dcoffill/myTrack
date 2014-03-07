@@ -38,28 +38,30 @@ public class MTPopupDialogFragment extends DialogFragment {
         currentDscrpTitle.setLayoutParams(llp1);
         currentDscrpTitle.setTextSize(20);
 
+        LinearLayout.LayoutParams llp2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp2.setMargins(53, 13, 40, 0); // llp.setMargins(left, top, right, bottom);
         TextView currentDscrpContent = new TextView(getActivity());
-        String tmpDscrpContent = "  "+ "\""+(DescriptionText.description)+"\"";
+        String tmpDscrpContent = "\""+(DescriptionText.description)+"\"";
         DescriptionText.reset();
         currentDscrpContent.setText(tmpDscrpContent);
         currentDscrpContent.setTextColor(Color.parseColor("#FF696969"));//DimGray
-        currentDscrpContent.setLayoutParams(llp1);
+        currentDscrpContent.setLayoutParams(llp2);
         currentDscrpContent.setHorizontallyScrolling(false);
         currentDscrpTitle.setTextSize(19);
 
 
-        LinearLayout.LayoutParams llp2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp2.setMargins(0, 0, 0, 20); // llp.setMargins(left, top, right, bottom);
+        LinearLayout.LayoutParams llp3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp3.setMargins(0, 0, 0, 20); // llp.setMargins(left, top, right, bottom);
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setLayoutParams(llp2);
+        linearLayout.setLayoutParams(llp3);
         linearLayout.addView(currentDscrpTitle);
         linearLayout.addView(currentDscrpContent);
         linearLayout.addView(addDscrp);
 
 
 
-        // Inflate and set the layout for the dialog
+        //set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setTitle(R.string.popup_title).setView(linearLayout)
                 // Add action buttons
