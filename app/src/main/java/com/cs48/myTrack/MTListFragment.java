@@ -3,7 +3,6 @@ package com.cs48.myTrack;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -31,12 +30,12 @@ public class MTListFragment extends ListFragment{
         String[] splitString = ((String)(getListView().getItemAtPosition(pos))).split(":",2);
         //Format: 2014-03-06 14:15:35
         String givenDateString = splitString[1];
-        Log.e("SplitString","The split string is:" + givenDateString);
+//        Log.e("SplitString","The split string is:" + givenDateString);
         SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss");
         try {
             Date mDate = sdf.parse(givenDateString);
             long timeInMilliseconds = mDate.getTime();
-            Log.e("timeInMilli","Time in Milli is: "+timeInMilliseconds);
+//            Log.e("timeInMilli","Time in Milli is: "+timeInMilliseconds);
             //search for the item and store its description in DescriptionText.description
             DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
             LocationInfo tmpLocationInfo = dbHelper.getLocationByTime(timeInMilliseconds);
