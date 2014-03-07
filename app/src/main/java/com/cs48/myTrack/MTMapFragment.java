@@ -3,6 +3,7 @@ package com.cs48.myTrack;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -65,7 +66,8 @@ public class MTMapFragment extends MapFragment {
 			gMap.addMarker(new MarkerOptions()
 				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
 				.title("Location #" + (j + 1))
-				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()));
+				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()))
+                .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
 			++j;
 		}
