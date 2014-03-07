@@ -19,7 +19,7 @@
     <string name="popup_cancelButtonText">Cancel</string>
     <string name="popup_addButtonText">Add</string>
     <string name="popup_deleteButtonText">Delete</string>
-    <string name="popup_title">Add Description/Delete Location</string>
+    <string name="popup_title">Add Descriptions/Delete Location</string>
 
 
     <string-array name="pref_syncConnectionTypes_entries">
