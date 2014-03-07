@@ -29,7 +29,7 @@ public class MTPopupDialogFragment extends DialogFragment {
 
         //create two description textViews(title and content) that display current description
         LinearLayout.LayoutParams llp1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp1.setMargins(40, 13, 0, 0); // llp.setMargins(left, top, right, bottom);
+        llp1.setMargins(40, 13, 40, 0); // llp.setMargins(left, top, right, bottom);
 
         TextView currentDscrpTitle = new TextView(getActivity());
         String tmpDscrpTitle = "Current Description: ";
