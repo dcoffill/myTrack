@@ -58,20 +58,47 @@ public class MTMapFragment extends MapFragment {
 //				.title(" Location #" + location.getProvider())
 //				.snippet(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH)));
 //		}
+
 		DatabaseHelper dh = new DatabaseHelper(getActivity());
 		List<LocationInfo> liList= dh.getAllLocations();
-		int j = 0;
-		PolylineOptions newLine = new PolylineOptions();
-		for (LocationInfo location: liList) {
+
+        //create a polyLine and add each marker as points on the line
+        PolylineOptions newLine = new PolylineOptions();
+
+        //create the first marker and draw it in
+        LocationInfo locationFirst = liList.get(0);
+        gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
+                .title("Location #1 - Start Point")
+                .snippet("\""+ locationFirst.get_Description()+"\"")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        newLine.add(new LatLng(locationFirst.get_Latitude(),locationFirst.get_Longitude()));
+
+
+        //draw all markers left in RED except the last one
+		int j = 1;
+		for (LocationInfo location: (liList.subList(1,(liList.size()-1)))) {
 			gMap.addMarker(new MarkerOptions()
 				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
 				.title("Location #" + (j + 1))
-				.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()))
-                .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+				.snippet("\""+ location.get_Description()+"\""))
+                .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
 			++j;
 		}
-		//Polyline polyline = gMap.addPolyline(newLine);
+
+
+
+        //create the last marker and draw it in AZURE
+        LocationInfo locationLast = liList.get(liList.size()-1);
+        gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
+                .title("Location #" + liList.size()+" - Latest Point")
+                .snippet("\""+ locationLast.get_Description()+"\"")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        newLine.add(new LatLng(locationLast.get_Latitude(),locationLast.get_Longitude()));
+
+        //draw the polyLine on map
         gMap.addPolyline(newLine);
 
 
