@@ -69,10 +69,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_TIME, location.getTime());
+        String timeMilli= String.valueOf(location.getTime());
+        String timeValue = timeMilli.substring(0,(timeMilli.length()-3))+"000";
+        values.put(KEY_TIME, timeValue);
         values.put(KEY_LATITUDE, String.valueOf(location.get_Latitude())); // Location latitude
         values.put(KEY_LONGITUDE, String.valueOf(location.get_Longitude())); // Location longitude
-
+        values.put(KEY_DESCRIPTION,"NONE");
         // Inserting Row
         db.insert(TABLE_INFO, null, values);
 
