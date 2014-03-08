@@ -260,6 +260,9 @@ public class NavigationDrawerFragment extends Fragment {
             if (dh.timeCheck(mLocationInfo)){//when there is no same time existing in table
                 dh.addLocation(mLocationInfo);
                 Toast.makeText(getActivity(), "Location recorded", Toast.LENGTH_SHORT).show();
+
+				// Refresh map
+				MTMapFragment.getInstance().refresh();
             }
             else{//when there is a same time existing in table
                 Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();

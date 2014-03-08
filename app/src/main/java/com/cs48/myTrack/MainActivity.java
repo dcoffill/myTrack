@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements
 //		mServiceIntent.setData(Uri.parse("test_because_i_don't_know_what_goes_here"));
 //		this.startService(mServiceIntent);
 
-		boolean trackingEnabled = true; // Change to true then compile if you want to test background tracking
+		boolean trackingEnabled = false; // Change to true then compile if you want to test background tracking
 		if (trackingEnabled) {
 			alarm.setAlarm(this);
 			Log.i("@@@@@", "Tracking Enabled!");

@@ -31,7 +31,7 @@ public class LocationBackgroundService extends IntentService implements
 	private Location mLocation;
 	private final static int
 			CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-	boolean trackingEnabled = true;  // Change this to true if you want the app to do automatic
+	boolean trackingEnabled = false;  // Change this to true if you want the app to do automatic
 	// tracking.  May destroy your battery life though, given the current state of the
 	// service, so change it back to false if you commit
 
@@ -81,10 +81,10 @@ public class LocationBackgroundService extends IntentService implements
 				db.addLocation(mLocationInfo);
 				// Explicitly refresh the MTMapFragment to show the new location marker
 				MTMapFragment.getInstance().refresh();
-				Log.i("-----", "Location recorded in background");
+				Log.i("LocationBackgroundService", "Location recorded in background");
 			}
 			else {
-				Log.e("-----", "Error: Location client was not available to LocationBackgroundService");
+				Log.e("LocationBackgroundService", "Location client was not available to LocationBackgroundService");
 			}
 		}
 
