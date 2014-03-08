@@ -257,12 +257,9 @@ public class MainActivity extends Activity implements
         FragmentManager fragmentManager = getFragmentManager();
         switch (position) {
             case 0:
-				// If first drawer option is chosen, create a new map fragment and switch to it
-				// Unfortunately this means every time we switch to it, a new MapFragment is created
-				// And as such, we lose things like previous map position
-				// Possibly can be fixed using the backStack or onResume methods, will have to
-				// investigate further
-                MTMapFragment myMap = new MTMapFragment();
+
+				// get an instance of MTMapFragment
+                MTMapFragment myMap = MTMapFragment.getInstance();
                 fragmentManager.beginTransaction()
                     .replace(R.id.container, myMap)
                     .commit();
@@ -368,6 +365,7 @@ public class MainActivity extends Activity implements
 
     /**
      * A placeholder fragment containing a simple view.
+	 * @deprecated
      */
     public static class PlaceholderFragment extends Fragment {
         /**
