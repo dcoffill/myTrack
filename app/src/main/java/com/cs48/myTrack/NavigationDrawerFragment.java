@@ -261,7 +261,10 @@ public class NavigationDrawerFragment extends Fragment {
             //when there is no same time exist in table
             dh.addLocation(mLocationInfo);
             Toast.makeText(getActivity(), "Location recorded", Toast.LENGTH_SHORT).show();
-        }
+
+			// Refresh the MTMapFragment so that the new point immediately appears on the map
+			MTMapFragment.getInstance().refresh();
+		}
         else{
             //when there is a same time exist in table
             Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();

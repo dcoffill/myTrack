@@ -31,7 +31,7 @@ public class LocationBackgroundService extends IntentService implements
 	private Location mLocation;
 	private final static int
 			CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-	boolean trackingEnabled = false;  // Change this to true if you want the app to do automatic
+	boolean trackingEnabled = true;  // Change this to true if you want the app to do automatic
 	// tracking.  May destroy your battery life though, given the current state of the
 	// service, so change it back to false if you commit
 
@@ -79,6 +79,8 @@ public class LocationBackgroundService extends IntentService implements
 				// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
 				// special here with regards to locking
 				db.addLocation(mLocationInfo);
+				// Explicitly refresh the MTMapFragment to show the new location marker
+				MTMapFragment.getInstance().refresh();
 				Log.i("-----", "Location recorded in background");
 			}
 			else {
