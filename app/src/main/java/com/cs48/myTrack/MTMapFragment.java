@@ -7,6 +7,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -48,18 +49,28 @@ public class MTMapFragment extends MapFragment {
 
 		// Redraw all the map points
 		this.refresh();
+        this.updateCamera();
 
-		// Manipulate camera position, either to last location, or an arbitrary point if that fails
+	}
+
+
+    /**
+     * Define a method that updates camera position
+     */
+    public void updateCamera(){
+        // Manipulate camera position, either to last location, or an arbitrary point if that fails
         try{
             LocationInfo tmpLocation = liList.get(liList.size()-1);
             LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
-            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,17));
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,17));
         }catch(IndexOutOfBoundsException ex){
-                LatLng cameraCtr = new LatLng(34.41,-119.84);
-                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,11));
+            LatLng cameraCtr = new LatLng(34.41,-119.84);//Goleta City
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,11));
 
         }
-	}
+    }
+
+
 
 	/**
 	 * Clear the map and redraw all items (Polylines, Markers, and so on)
@@ -104,13 +115,14 @@ public class MTMapFragment extends MapFragment {
 
 		//create the last marker and draw it in AZURE
 		LocationInfo locationLast = liList.get(liList.size()-1);
-		gMap.addMarker(new MarkerOptions()
-				.position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
-				.title("Location #" + liList.size()+" - Latest Point")
-				.snippet("\""+ locationLast.get_Description()+"\"")
-				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+		Marker lastMarker = gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
+                .title("Location #" + liList.size() + " - Latest Point")
+                .snippet("\"" + locationLast.get_Description() + "\"")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 		newLine.add(new LatLng(locationLast.get_Latitude(),locationLast.get_Longitude()));
 
+        lastMarker.showInfoWindow();
 		//draw the polyLine on map
 		gMap.addPolyline(newLine);
 	}
