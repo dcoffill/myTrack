@@ -255,6 +255,8 @@ public class NavigationDrawerFragment extends Fragment {
             //might be a problem here by getActivity()
             mCurrentLocation = ((MainActivity)getActivity()).getLocation();
             LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
+            String timeMilli= String.valueOf(mLocationInfo.getTime());
+            mLocationInfo.setTime(Long.parseLong(timeMilli.substring(0,(timeMilli.length()-3))+"000"));
             DatabaseHelper dh = new DatabaseHelper(getActivity());
             //the if statement check if we can add the location to the database
             if (dh.timeCheck(mLocationInfo)){//when there is no same time existing in table
