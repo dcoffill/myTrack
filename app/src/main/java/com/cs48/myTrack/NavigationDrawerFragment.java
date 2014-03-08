@@ -265,6 +265,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 				// Refresh map
 				MTMapFragment.getInstance().refresh();
+                MTMapFragment.getInstance().updateCamera();
             }
             else{//when there is a same time existing in table
                 Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
