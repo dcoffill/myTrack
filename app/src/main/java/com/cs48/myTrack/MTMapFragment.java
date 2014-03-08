@@ -1,13 +1,11 @@
 package com.cs48.myTrack;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
@@ -17,25 +15,26 @@ import java.util.List;
  */
 public class MTMapFragment extends MapFragment {
 	private GoogleMap gMap;
-	private static MTMapFragment mMap;
-	List<LocationInfo> liList;
+	private LocationList list = new LocationList();
 
-	/**
-	 * Singleton constructor
-	 * @return MTMapFragment that was requested
-	 */
-	public static MTMapFragment getInstance() {
-		if (mMap == null) {
-			mMap = new MTMapFragment();
-		}
-		return mMap;
-	}
-
-	private MTMapFragment() {
+	MTMapFragment() {
 		super();
 
 	}
 
+	// This is possibly unnecessary, but I'm leaving it because I don't know if we'll need it later
+//	@Override
+//	public void onViewCreated(View view, Bundle bundle) {
+//		super.onViewCreated(view, bundle);
+//		//myMap = super.getMap();
+//	}
+
+//	@Override
+//	public void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//
+//
+//	}
 
 	@Override
 	public void onStart() {
@@ -44,7 +43,6 @@ public class MTMapFragment extends MapFragment {
 
 	}
 
-	@Override
 	public void onResume() {
 		super.onResume();
 		// If gMap is currently null, reassign it
@@ -52,69 +50,78 @@ public class MTMapFragment extends MapFragment {
 			gMap = this.getMap();
 		}
 
-		// Refresh the points on the map
-		this.refresh();
+//		for (MTLocation location: list) {
+//			Calendar cal = Calendar.getInstance();
+//			cal.setTimeInMillis((long)location.getTime());
+//			gMap.addMarker(new MarkerOptions()
+//				.position(new LatLng(location.getLatitude(), location.getLongitude()))
+//				.title(" Location #" + location.getProvider())
+//				.snippet(cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH)));
+//		}
 
-		// Attempt to move the camera to the most recently recorded location
+		DatabaseHelper dh = new DatabaseHelper(getActivity());
+		List<LocationInfo> liList= dh.getAllLocations();
+
+        //create a polyLine and add each marker as points on the line
+        PolylineOptions newLine = new PolylineOptions();
+
+        //create the first marker and draw it in
+        LocationInfo locationFirst = liList.get(0);
+        gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
+                .title("Location #1 - Start Point")
+                .snippet("\""+ locationFirst.get_Description()+"\"")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        newLine.add(new LatLng(locationFirst.get_Latitude(),locationFirst.get_Longitude()));
+
+
+        //draw all markers left in RED except the last one
+		int j = 1;
+		for (LocationInfo location: (liList.subList(1,(liList.size()-1)))) {
+			gMap.addMarker(new MarkerOptions()
+				.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
+				.title("Location #" + (j + 1))
+				.snippet("\""+ location.get_Description()+"\""))
+                .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
+			++j;
+		}
+
+
+
+        //create the last marker and draw it in AZURE
+        LocationInfo locationLast = liList.get(liList.size()-1);
+        gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
+                .title("Location #" + liList.size()+" - Latest Point")
+                .snippet("\""+ locationLast.get_Description()+"\"")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        newLine.add(new LatLng(locationLast.get_Latitude(),locationLast.get_Longitude()));
+
+        //draw the polyLine on map
+        gMap.addPolyline(newLine);
+
+
         try{
-            LocationInfo tmpLocation = liList.get(0);
+            LocationInfo tmpLocation = liList.get(liList.size()-1);
             LatLng cameraCtr = new LatLng(tmpLocation.get_Latitude(),tmpLocation.get_Longitude());
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,17));
         }catch(IndexOutOfBoundsException ex){
-			// If that doesn't work, move the camera to an arbitrarily selected point
-
 //                LocationClient mLocationClient = new LocationClient(this,this,this)
 //                Location mCurrentLocation = ((MainActivity)getActivity()).getLocation();
 //                LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
 //                dh.addLocation(mLocationInfo);
 //                LocationInfo tmpLocation = liList.get(0);
                 LatLng cameraCtr = new LatLng(34.41,-119.84);
-                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,10));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,11));
 
         }
-	}
+//		// For now, centers the map above Australia.  Maybe shouldn't be in onResume, since it's
+//		// annoying how it re-centers every time you even switch apps...
+//		gMap = super.getMap();
+//		LatLngBounds australia = new LatLngBounds(new LatLng(-44, 113), new LatLng(-10, 154));
+//		gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(australia.getCenter(), 3));
 
-	/**
-	 * Clear the map of existing features, then draw the Markers and Polyline onto the map
-	 */
-	public void refresh() {
-
-		// Check if gMap is null
-		if (gMap == null) {
-			// If it is, attempt to request a GoogleMap
-			gMap = this.getMap();
-			if (gMap == null) {
-				// if that fails, return
-				Log.e("@@@@@", "Error, MTMapFragment could not be refreshed");
-				return;
-			}
-
-		}
-
-		Log.i("@@@@@", "MTMapFragment refreshed");
-
-		// Clear the map
-		gMap.clear();
-
-		// Get database locations (gets every recorded location at the moment)
-		DatabaseHelper dh = new DatabaseHelper(getActivity());
-		liList= dh.getAllLocations();
-
-		// Make new polyline
-		PolylineOptions newLine = new PolylineOptions();
-
-		// Draw individual markers on the map, and add them to the Polyline's path
-		int j = 0;
-		for (LocationInfo location: liList) {
-			gMap.addMarker(new MarkerOptions()
-					.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
-					.title("Location #" + j)
-					.snippet("Lat: " + location.get_Latitude() + "; Long: " + location.get_Longitude()));
-			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
-			++j;
-		}
-		// Add polyline to the map
-		Polyline polyline = gMap.addPolyline(newLine);
 	}
 }
 

@@ -21,10 +21,11 @@ public class LocationInfo {
 
     }
     // constructor
-    public LocationInfo(long time, Double latitude, Double longitude){
+    public LocationInfo(long time, Double latitude, Double longitude, String description){
         this._time = time;
         this._latitude = latitude;
         this._longitude = longitude;
+        this._description = description;
     }
 
     // constructor

@@ -256,19 +256,14 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentLocation = ((MainActivity)getActivity()).getLocation();
             LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
             DatabaseHelper dh = new DatabaseHelper(getActivity());
-            //the if statement check if item exist in table
-        if (dh.timeCheck(mLocationInfo)){
-            //when there is no same time exist in table
-            dh.addLocation(mLocationInfo);
-            Toast.makeText(getActivity(), "Location recorded", Toast.LENGTH_SHORT).show();
-
-			// Refresh the MTMapFragment so that the new point immediately appears on the map
-			MTMapFragment.getInstance().refresh();
-		}
-        else{
-            //when there is a same time exist in table
-            Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
-        }
+            //the if statement check if we can add the location to the database
+            if (dh.timeCheck(mLocationInfo)){//when there is no same time existing in table
+                dh.addLocation(mLocationInfo);
+                Toast.makeText(getActivity(), "Location recorded", Toast.LENGTH_SHORT).show();
+            }
+            else{//when there is a same time existing in table
+                Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 

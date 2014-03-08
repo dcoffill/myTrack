@@ -69,10 +69,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_TIME, location.getTime());
+        String timeMilli= String.valueOf(location.getTime());
+        String timeValue = timeMilli.substring(0,(timeMilli.length()-3))+"000";
+        values.put(KEY_TIME, timeValue);
         values.put(KEY_LATITUDE, String.valueOf(location.get_Latitude())); // Location latitude
         values.put(KEY_LONGITUDE, String.valueOf(location.get_Longitude())); // Location longitude
-
+        values.put(KEY_DESCRIPTION,"NONE");
         // Inserting Row
         db.insert(TABLE_INFO, null, values);
 
@@ -135,33 +137,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 location.setTime(Long.parseLong(cursor.getString(0)));
                 location.set_Latitude(Double.parseDouble(cursor.getString(1)));
                 location.set_Longitude(Double.parseDouble(cursor.getString(2)));
+                location.set_Description(cursor.getString(3));
                 // Adding location to list
                 locationList.add(location);
             } while (cursor.moveToNext());
         }
 
-        // return location list
         return locationList;
     }
 
-/*    // Getting location by date, ex
-    public LocationInfo getLocation(int id) {
+   // Getting location by date, ex
+    public LocationInfo getLocationByTime(long time) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_INFO, new String[] { KEY_Time,
-                KEY_LATITUDE, KEY_LONGITUDE }, KEY_Time + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_INFO, new String[] { KEY_TIME,
+                KEY_LATITUDE, KEY_LONGITUDE, KEY_DESCRIPTION }, KEY_TIME + "=?",
+                new String[] { String.valueOf(time) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        LocationInfo location = new LocationInfo();
-        location.setTime(id);
-        location.set_Latitude(Double.parseDouble(cursor.getString(1)));
-        location.set_Longitude(Double.parseDouble(cursor.getString(2)));
-
-        // return location
-        return location;
-    }*/
+        LocationInfo locationInfo = new LocationInfo();
+        locationInfo.setTime(time);
+        locationInfo.set_Latitude(Double.parseDouble(cursor.getString(1)));
+        locationInfo.set_Longitude(Double.parseDouble(cursor.getString(2)));
+        locationInfo.set_Description(cursor.getString(3));
+        // return locationInfo
+        return locationInfo;
+}
 
     // Getting ?? newest locations, warning: less rows in db than required amount may cause problem
     // I'm still working on this method, incomplete state
