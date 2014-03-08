@@ -7,8 +7,10 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +23,7 @@ public class MTPopupDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View addDscrp = inflater.inflate(R.layout.popup, null);
+        final View addDscrp = inflater.inflate(R.layout.popup, null);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(50, 10, 0, 0); // llp.setMargins(left, top, right, bottom);
         addDscrp.setBackgroundColor(Color.parseColor("#FFF5F5F5"));
@@ -32,7 +34,7 @@ public class MTPopupDialogFragment extends DialogFragment {
         llp1.setMargins(40, 13, 40, 0); // llp.setMargins(left, top, right, bottom);
 
         TextView currentDscrpTitle = new TextView(getActivity());
-        String tmpDscrpTitle = "Current Description: ";
+        String tmpDscrpTitle = "Current Description for #"+ListDialogTransactor.itemNum+":";
         currentDscrpTitle.setText(tmpDscrpTitle);
         currentDscrpTitle.setTextColor(Color.parseColor("#FF20B2AA"));//LightSeaGreen
         currentDscrpTitle.setLayoutParams(llp1);
@@ -41,8 +43,7 @@ public class MTPopupDialogFragment extends DialogFragment {
         LinearLayout.LayoutParams llp2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp2.setMargins(53, 13, 40, 0); // llp.setMargins(left, top, right, bottom);
         TextView currentDscrpContent = new TextView(getActivity());
-        String tmpDscrpContent = "\""+(DescriptionText.description)+"\"";
-        DescriptionText.reset();
+        String tmpDscrpContent = "\""+(ListDialogTransactor.description)+"\"";
         currentDscrpContent.setText(tmpDscrpContent);
         currentDscrpContent.setTextColor(Color.parseColor("#FF696969"));//DimGray
         currentDscrpContent.setLayoutParams(llp2);
@@ -60,6 +61,9 @@ public class MTPopupDialogFragment extends DialogFragment {
         linearLayout.addView(addDscrp);
 
 
+        //create a DatabaseHelper to be used
+        final DatabaseHelper tmpDBHelper = new DatabaseHelper(getActivity());
+
 
         //set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
@@ -72,22 +76,59 @@ public class MTPopupDialogFragment extends DialogFragment {
                 })
                 .setNeutralButton(R.string.popup_deleteButtonText, new DialogInterface.OnClickListener() {
                     @Override
+                    //NOT WORKING FOR NOW!!!!
+                    //Have to find a way to refresh the listFragment so that the deleted item will disappear
+
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MTPopupDialogFragment.this.getDialog().cancel();
+                        //tmpDBHelper.deleteLocation(String.valueOf(ListDialogTransactor.locationInfo.getTime()));
+                        MTPopupDialogFragment.this.getDialog().dismiss();
                         Toast.makeText(getActivity(), "Delete Location successful", Toast.LENGTH_SHORT).show();
+
                     }
 
                 })
                 .setPositiveButton(R.string.popup_addButtonText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        MTPopupDialogFragment.this.getDialog().cancel();
-                        Toast.makeText(getActivity(), "Add description successful", Toast.LENGTH_SHORT).show();
+                        //read user input from editText
+                        final EditText editText = (EditText)addDscrp.findViewById(R.id.editText2);
+                        String newDescription = editText.getText().toString();
+                        LocationInfo locationInfo;
+                        if(!newDescription.isEmpty()){
+                            locationInfo = new LocationInfo(ListDialogTransactor.locationInfo.getTime(),
+                                    ListDialogTransactor.locationInfo.get_Latitude(),ListDialogTransactor.locationInfo.get_Longitude(),
+                                    newDescription);
+                            Log.e("addClick","Description:"+locationInfo.get_Description()+"time:"+locationInfo.getTime());
+                        }
+                        else{
+                            locationInfo = new LocationInfo(ListDialogTransactor.locationInfo.getTime(),
+                                    ListDialogTransactor.locationInfo.get_Latitude(),ListDialogTransactor.locationInfo.get_Longitude(),
+                                    ListDialogTransactor.description);
+                            Log.e("addClick","Description:"+locationInfo.get_Description()+"time:"+locationInfo.getTime());
+                        }
+
+                        tmpDBHelper.updateLocation(locationInfo);
+
+                        MTPopupDialogFragment.this.getDialog().dismiss();
+                        Toast.makeText(getActivity(), "Add descriptions successful", Toast.LENGTH_SHORT).show();
                     }
                 });
 
 
         return builder.create();
+    }
+
+
+    @Override
+    public void onDismiss (DialogInterface dialog){
+        super.onDismiss(dialog);
+        ListDialogTransactor.reset();
+    }
+
+    @Override
+    public void onCancel (DialogInterface dialog){
+        super.onCancel(dialog);
+        ListDialogTransactor.reset();
     }
 
 
