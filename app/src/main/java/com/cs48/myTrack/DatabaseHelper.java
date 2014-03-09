@@ -165,13 +165,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return locationInfo;
 }
 
-    // Getting ?? newest locations, warning: less rows in db than required amount may cause problem
-    // I'm still working on this method, incomplete state
-    //TODO: WELCOME to test and edit, please tell me the results and errors
-    public List<LocationInfo> getNewLocations(int amount) {
+    // Getting ?? newest locations, warning: no row check included, less rows in db than required amount may cause problem
+    // Be sure to use getLocationCount before you call this method, check if the amount valid
+    public List<LocationInfo> getLastLocations(int amount) {
         List<LocationInfo> locationList = new ArrayList<LocationInfo>();
-        // Select Query depend by amount
-        String selectQuery = "SELECT  * FROM " + TABLE_INFO + " ASC " + "limit " + String.valueOf(amount);
+        int count = amount;
+        // Select Query, get all in table
+        String selectQuery = "SELECT  * FROM " + TABLE_INFO;
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor=database.rawQuery(selectQuery, null);
+//
+        // looping from the bottom of table and adding to list
+        if (cursor.moveToLast()) {
+            do {
+                LocationInfo location = new LocationInfo();
+                location.setTime(Long.parseLong(cursor.getString(0)));
+                location.set_Latitude(Double.parseDouble(cursor.getString(1)));
+                location.set_Longitude(Double.parseDouble(cursor.getString(2)));
+                location.set_Description(cursor.getString(3));
+                // Adding location to list
+                locationList.add(location);
+                cursor.moveToPrevious();
+                count--;
+            } while (count > 0);
+        }
+
+        // return location list
+        return locationList;
+    }
+
+    // Getting Locations In Range
+    public List<LocationInfo> getLocationsInRange(LocationInfo startLocation, LocationInfo endLocation) {
+        List<LocationInfo> locationList = new ArrayList<LocationInfo>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_INFO;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -179,16 +206,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                LocationInfo location = new LocationInfo();
-                location.setTime(Long.parseLong(cursor.getString(0)));
-                location.set_Latitude(Double.parseDouble(cursor.getString(1)));
-                location.set_Longitude(Double.parseDouble(cursor.getString(2)));
-                // Adding location to list
-                locationList.add(location);
+                if(startLocation.getTime() <= Long.parseLong(cursor.getString(0)) && endLocation.getTime() >= Long.parseLong(cursor.getString(0))){
+                    LocationInfo location = new LocationInfo();
+                    location.setTime(Long.parseLong(cursor.getString(0)));
+                    location.set_Latitude(Double.parseDouble(cursor.getString(1)));
+                    location.set_Longitude(Double.parseDouble(cursor.getString(2)));
+                    location.set_Description(cursor.getString(3));
+                    // Adding location to list
+                    locationList.add(location);
+                }
             } while (cursor.moveToNext());
         }
-
-        // return location list
+        //The result list is ordered for start time(old) to end time(new)
         return locationList;
     }
 
