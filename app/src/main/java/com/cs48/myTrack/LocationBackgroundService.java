@@ -79,8 +79,15 @@ public class LocationBackgroundService extends IntentService implements
 				// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
 				// special here with regards to locking
 				db.addLocation(mLocationInfo);
+				db.close();
 				// Explicitly refresh the MTMapFragment to show the new location marker
 				MTMapFragment.getInstance().refresh();
+
+				try {
+				MTListFragment.getInstance().refresh();
+				} catch (NullPointerException ex) {
+					ex.printStackTrace();
+				}
 				Log.i("LocationBackgroundService", "Location recorded in background");
 			}
 			else {

@@ -261,13 +261,17 @@ public class NavigationDrawerFragment extends Fragment {
             //the if statement check if we can add the location to the database
             if (dh.timeCheck(mLocationInfo)){//when there is no same time existing in table
                 dh.addLocation(mLocationInfo);
+				dh.close();
                 Toast.makeText(getActivity(), "Location recorded", Toast.LENGTH_SHORT).show();
 
 				// Refresh map
 				MTMapFragment.getInstance().refresh();
                 MTMapFragment.getInstance().updateCamera();
+				MTListFragment.getInstance().refresh();
+
             }
             else{//when there is a same time existing in table
+				dh.close();
                 Toast.makeText(getActivity(), "Please slow down recording frequency :)", Toast.LENGTH_SHORT).show();
             }
             return true;

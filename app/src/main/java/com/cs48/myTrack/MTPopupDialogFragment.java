@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.mtp.MtpDeviceInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class MTPopupDialogFragment extends DialogFragment {
                 .setNegativeButton(R.string.popup_cancelButtonText, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         MTPopupDialogFragment.this.getDialog().cancel();
+						tmpDBHelper.close();
                     }
                 })
                 .setNeutralButton(R.string.popup_deleteButtonText, new DialogInterface.OnClickListener() {
@@ -80,8 +82,10 @@ public class MTPopupDialogFragment extends DialogFragment {
                     //Have to find a way to refresh the listFragment so that the deleted item will disappear
 
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //tmpDBHelper.deleteLocation(String.valueOf(ListDialogTransactor.locationInfo.getTime()));
+                        tmpDBHelper.deleteLocation(String.valueOf(ListDialogTransactor.locationInfo.getTime()));
                         MTPopupDialogFragment.this.getDialog().dismiss();
+						tmpDBHelper.close();
+						MTListFragment.getInstance().refresh();
                         Toast.makeText(getActivity(), "Delete Location successful", Toast.LENGTH_SHORT).show();
 
                     }
@@ -108,6 +112,7 @@ public class MTPopupDialogFragment extends DialogFragment {
                         }
 
                         tmpDBHelper.updateLocation(locationInfo);
+						tmpDBHelper.close();
 
                         MTPopupDialogFragment.this.getDialog().dismiss();
                         Toast.makeText(getActivity(), "Add descriptions successful", Toast.LENGTH_SHORT).show();
