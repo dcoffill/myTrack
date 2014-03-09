@@ -203,7 +203,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // return location list
 		cursor.close();
-		db.close();
+		database.close();
         return locationList;
     }
 
@@ -231,6 +231,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         //The result list is ordered for start time(old) to end time(new)
+        cursor.close();
+        db.close();
         return locationList;
     }
 
