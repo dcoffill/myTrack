@@ -89,12 +89,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery,null);
         //move the cursor to the last record
         cursor.moveToLast();
+
         if (!cursor.moveToLast()){ //if the database is empty
+			cursor.close();
+			db.close();
             return true;
         }
         if(String.valueOf(location.getTime()).equals(cursor.getString(0))){
+			cursor.close();
+			db.close();
             return false;
         }else{
+			cursor.close();
+			db.close();
             return  true;
         }
 
@@ -143,6 +150,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+		cursor.close();
+		db.close();
         return locationList;
     }
 
@@ -162,16 +171,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         locationInfo.set_Longitude(Double.parseDouble(cursor.getString(2)));
         locationInfo.set_Description(cursor.getString(3));
         // return locationInfo
+		cursor.close();
+		db.close();
         return locationInfo;
 }
 
-    // Getting ?? newest locations, warning: less rows in db than required amount may cause problem
-    // I'm still working on this method, incomplete state
-    //TODO: WELCOME to test and edit, please tell me the results and errors
-    public List<LocationInfo> getNewLocations(int amount) {
+    // Getting ?? newest locations, warning: no row check included, less rows in db than required amount may cause problem
+    // Be sure to use getLocationCount before you call this method, check if the amount valid
+    public List<LocationInfo> getLastLocations(int amount) {
         List<LocationInfo> locationList = new ArrayList<LocationInfo>();
-        // Select Query depend by amount
-        String selectQuery = "SELECT  * FROM " + TABLE_INFO + " ASC " + "limit " + String.valueOf(amount);
+        int count = amount;
+        // Select Query, get all in table
+        String selectQuery = "SELECT  * FROM " + TABLE_INFO;
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor=database.rawQuery(selectQuery, null);
+//
+        // looping from the bottom of table and adding to list
+        if (cursor.moveToLast()) {
+            do {
+                LocationInfo location = new LocationInfo();
+                location.setTime(Long.parseLong(cursor.getString(0)));
+                location.set_Latitude(Double.parseDouble(cursor.getString(1)));
+                location.set_Longitude(Double.parseDouble(cursor.getString(2)));
+                location.set_Description(cursor.getString(3));
+                // Adding location to list
+                locationList.add(location);
+                cursor.moveToPrevious();
+                count--;
+            } while (count > 0);
+        }
+
+        // return location list
+		cursor.close();
+		database.close();
+        return locationList;
+    }
+
+    // Getting Locations In Range
+    public List<LocationInfo> getLocationsInRange(LocationInfo startLocation, LocationInfo endLocation) {
+        List<LocationInfo> locationList = new ArrayList<LocationInfo>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_INFO;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -179,16 +219,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                LocationInfo location = new LocationInfo();
-                location.setTime(Long.parseLong(cursor.getString(0)));
-                location.set_Latitude(Double.parseDouble(cursor.getString(1)));
-                location.set_Longitude(Double.parseDouble(cursor.getString(2)));
-                // Adding location to list
-                locationList.add(location);
+                if(startLocation.getTime() <= Long.parseLong(cursor.getString(0)) && endLocation.getTime() >= Long.parseLong(cursor.getString(0))){
+                    LocationInfo location = new LocationInfo();
+                    location.setTime(Long.parseLong(cursor.getString(0)));
+                    location.set_Latitude(Double.parseDouble(cursor.getString(1)));
+                    location.set_Longitude(Double.parseDouble(cursor.getString(2)));
+                    location.set_Description(cursor.getString(3));
+                    // Adding location to list
+                    locationList.add(location);
+                }
             } while (cursor.moveToNext());
         }
-
-        // return location list
+        //The result list is ordered for start time(old) to end time(new)
+        cursor.close();
+        db.close();
         return locationList;
     }
 
@@ -201,8 +245,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DESCRIPTION, String.valueOf(location.get_Description()));
 
         // updating row
-        return db.update(TABLE_INFO, values, KEY_TIME + " = ?",
+		int result =  db.update(TABLE_INFO, values, KEY_TIME + " = ?",
                 new String[] { String.valueOf(location.getTime()) });
+		db.close();
+		return result;
     }
 
     // Deleting single location
@@ -224,10 +270,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_INFO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
 
         // return count
-        return cursor.getCount();
+		int count = cursor.getCount();
+		cursor.close();
+        return count;
     }
 
 }
