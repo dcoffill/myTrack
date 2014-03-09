@@ -89,12 +89,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery,null);
         //move the cursor to the last record
         cursor.moveToLast();
+
         if (!cursor.moveToLast()){ //if the database is empty
+			cursor.close();
+			db.close();
             return true;
         }
         if(String.valueOf(location.getTime()).equals(cursor.getString(0))){
+			cursor.close();
+			db.close();
             return false;
         }else{
+			cursor.close();
+			db.close();
             return  true;
         }
 
@@ -143,6 +150,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+		cursor.close();
+		db.close();
         return locationList;
     }
 
@@ -162,6 +171,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         locationInfo.set_Longitude(Double.parseDouble(cursor.getString(2)));
         locationInfo.set_Description(cursor.getString(3));
         // return locationInfo
+		cursor.close();
+		db.close();
         return locationInfo;
 }
 
@@ -189,6 +200,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         // return location list
+		cursor.close();
+		db.close();
         return locationList;
     }
 
@@ -201,8 +214,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_DESCRIPTION, String.valueOf(location.get_Description()));
 
         // updating row
-        return db.update(TABLE_INFO, values, KEY_TIME + " = ?",
+		int result =  db.update(TABLE_INFO, values, KEY_TIME + " = ?",
                 new String[] { String.valueOf(location.getTime()) });
+		db.close();
+		return result;
     }
 
     // Deleting single location
@@ -224,10 +239,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_INFO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
 
         // return count
-        return cursor.getCount();
+		int count = cursor.getCount();
+		cursor.close();
+        return count;
     }
 
 }

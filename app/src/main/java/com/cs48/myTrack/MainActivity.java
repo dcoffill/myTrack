@@ -267,35 +267,24 @@ public class MainActivity extends Activity implements
 
                 break;
             case 1:
-                // Get data from the database and store them in an ArrayList
-                DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
-                List<LocationInfo> locationInfoList =  dbHelper.getAllLocations();
-                Collections.reverse(locationInfoList);
-                ArrayList<String> myListTitles = new ArrayList<String>();
-                int tmpInt = 0;
-                for(LocationInfo locInfo:locationInfoList){
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String dateString = formatter.format(new Date(locInfo.getTime()));
-                    String tmpStr = "Location #"+(locationInfoList.size()-tmpInt)+": "+dateString;
-//                  tmpStr = "Latitude: "+(locInfo.get_Latitude().toString())+"\nLongitude: "+(locInfo.get_Longitude().toString());
-                    myListTitles.add(tmpStr);
-                    ++tmpInt;
-                }
+//                // Get data from the database and store them in an ArrayList
+//                DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
+//                List<LocationInfo> locationInfoList =  dbHelper.getAllLocations();
+//                Collections.reverse(locationInfoList);
+//                ArrayList<String> myListTitles = new ArrayList<String>();
+//                int tmpInt = 0;
+//                for(LocationInfo locInfo:locationInfoList){
+//                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                    String dateString = formatter.format(new Date(locInfo.getTime()));
+//                    String tmpStr = "Location #"+(locationInfoList.size()-tmpInt)+": "+dateString;
+////                  tmpStr = "Latitude: "+(locInfo.get_Latitude().toString())+"\nLongitude: "+(locInfo.get_Longitude().toString());
+//                    myListTitles.add(tmpStr);
+//                    ++tmpInt;
+//                }
 
                 //Create a ListFragment
-                MTListFragment myList = new MTListFragment();
-
-                // Define a new Adapter
-                // First parameter - Context
-                // Second parameter - Layout for the row
-                // Third parameter - ID of the TextView to which the data is written
-                // Forth - the Array of data
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                        android.R.layout.simple_list_item_1, myListTitles);
-                // Assign adapter to ListFragment
-                myList.setListAdapter(adapter);
-
-
+                MTListFragment myList = MTListFragment.getInstance();
+				//myList.refresh();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, myList)
                         .commit();
