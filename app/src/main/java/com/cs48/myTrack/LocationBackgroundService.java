@@ -44,7 +44,7 @@ public class LocationBackgroundService extends IntentService implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.i("@@@@@", "Started LocationBackgroundService");
+		Log.i("LocationBackgroundService", "Started LocationBackgroundService");
 		mLocationClient = new LocationClient(this, this, this);
 		mLocationClient.connect();
 
@@ -76,6 +76,28 @@ public class LocationBackgroundService extends IntentService implements
 				LocationInfo mLocationInfo = new LocationInfo(mLocationClient.getLastLocation());
 				DatabaseHelper db = new DatabaseHelper(this);
 
+				// If there is at least one point in the database, check to make sure that this point is at least
+				// a certain distance from the last recorded point
+				if (db.getLocationsCount() > 1) {
+					// Get the last location
+					LocationInfo li = db.getLastLocations(1).get(0);
+					float[] distance = new float[1];
+
+					// Check that the distance between the recorded point ant the most recent point in the database
+					// is at least X meters (currently hardcoded at 40m)
+					Location.distanceBetween(mLocationInfo.get_Latitude(), mLocationInfo.get_Longitude(), li.get_Latitude(), li.get_Longitude(), distance);
+
+					// If the distance is less than 40 meters, close the database and return without saving that point
+					if (distance[0] < 40) {
+						Log.i("LocationBackgroundService", "Current location too close to previous location, discarding...");
+						db.close();
+						return;
+					}
+				}
+				// If there was less than 1 location in the database (new app install) or the location was not too close
+				// record the location in the database
+
+
 				// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
 				// special here with regards to locking
 				db.addLocation(mLocationInfo);
@@ -83,11 +105,7 @@ public class LocationBackgroundService extends IntentService implements
 				// Explicitly refresh the MTMapFragment to show the new location marker
 				MTMapFragment.getInstance().refresh();
 
-				try {
 				MTListFragment.getInstance().refresh();
-				} catch (NullPointerException ex) {
-					ex.printStackTrace();
-				}
 				Log.i("LocationBackgroundService", "Location recorded in background");
 			}
 			else {
