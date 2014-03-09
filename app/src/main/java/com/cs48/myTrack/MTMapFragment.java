@@ -1,6 +1,7 @@
 package com.cs48.myTrack;
 
 import android.os.Bundle;
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +22,7 @@ import java.util.List;
 public class MTMapFragment extends MapFragment {
 	private GoogleMap gMap;
 	private static MTMapFragment mMap;
+	private Context context;
 	List<LocationInfo> liList;
     boolean showZoomOutMap = true;
 
@@ -41,14 +43,15 @@ public class MTMapFragment extends MapFragment {
         gMap = super.getMap();
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
+        context = getActivity();
         this.refresh();
         showZoomOutMap = true;
         this.cameraShowAll();
         gMap.animateCamera(CameraUpdateFactory.zoomOut());
         gMap.animateCamera(CameraUpdateFactory.zoomOut());
         gMap.animateCamera(CameraUpdateFactory.zoomOut());
-    }
 
+    }
 
 	public void onResume() {
 		super.onResume();
@@ -98,8 +101,9 @@ public class MTMapFragment extends MapFragment {
 		gMap.clear();
 
 		// Get locations (currently fetches all recorded locations)
-		DatabaseHelper dh = new DatabaseHelper(getActivity());
+		DatabaseHelper dh = new DatabaseHelper(context);
 		liList= dh.getAllLocations();
+		dh.close();
 
 		//create a polyLine and add each marker as points on the line
 		PolylineOptions newLine = new PolylineOptions();
