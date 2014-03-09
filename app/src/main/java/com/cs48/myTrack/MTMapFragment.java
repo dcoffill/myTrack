@@ -1,5 +1,6 @@
 package com.cs48.myTrack;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -7,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -20,6 +22,7 @@ public class MTMapFragment extends MapFragment {
 	private GoogleMap gMap;
 	private static MTMapFragment mMap;
 	List<LocationInfo> liList;
+    boolean showZoomOutMap = true;
 
 	public static MTMapFragment getInstance() {
 		if (mMap == null) {
@@ -33,12 +36,19 @@ public class MTMapFragment extends MapFragment {
 
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		gMap = super.getMap();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        gMap = super.getMap();
+        super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
+        this.refresh();
+        showZoomOutMap = true;
+        this.cameraShowAll();
+        gMap.animateCamera(CameraUpdateFactory.zoomOut());
+        gMap.animateCamera(CameraUpdateFactory.zoomOut());
+        gMap.animateCamera(CameraUpdateFactory.zoomOut());
+    }
 
-	}
 
 	public void onResume() {
 		super.onResume();
@@ -48,8 +58,9 @@ public class MTMapFragment extends MapFragment {
 		}
 
 		// Redraw all the map points
-		this.refresh();
+        this.refresh();
         this.updateCamera();
+
 
 	}
 
@@ -58,6 +69,7 @@ public class MTMapFragment extends MapFragment {
      * Define a method that updates camera position
      */
     public void updateCamera(){
+
         // Manipulate camera position, either to last location, or an arbitrary point if that fails
         try{
             LocationInfo tmpLocation = liList.get(liList.size()-1);
@@ -92,39 +104,109 @@ public class MTMapFragment extends MapFragment {
 		//create a polyLine and add each marker as points on the line
 		PolylineOptions newLine = new PolylineOptions();
 
-		//create the first marker and draw it in
-		LocationInfo locationFirst = liList.get(0);
-		gMap.addMarker(new MarkerOptions()
-				.position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
-				.title("Location #1 - Start Point")
-				.snippet("\""+ locationFirst.get_Description()+"\"")
-				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-		newLine.add(new LatLng(locationFirst.get_Latitude(),locationFirst.get_Longitude()));
+        if(liList.isEmpty()){
+        }
 
-		//draw all markers left in RED except the last one
-		int j = 1;
-		for (LocationInfo location: (liList.subList(1,(liList.size()-1)))) {
-			gMap.addMarker(new MarkerOptions()
-					.position(new LatLng(location.get_Latitude(), location.get_Longitude()))
-					.title("Location #" + (j + 1))
-					.snippet("\""+ location.get_Description()+"\""))
-					.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-			newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
-			++j;
-		}
+        if (liList.size()==1){
+            LocationInfo locationFirst = liList.get(0);
+            Marker lastMarker = gMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
+                    .title("Location #" + liList.size() + " - Latest Point")
+                    .snippet("\"" + locationFirst.get_Description() + "\"")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            newLine.add(new LatLng(locationFirst.get_Latitude(),locationFirst.get_Longitude()));
 
-		//create the last marker and draw it in AZURE
-		LocationInfo locationLast = liList.get(liList.size()-1);
-		Marker lastMarker = gMap.addMarker(new MarkerOptions()
-                .position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
-                .title("Location #" + liList.size() + " - Latest Point")
-                .snippet("\"" + locationLast.get_Description() + "\"")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-		newLine.add(new LatLng(locationLast.get_Latitude(),locationLast.get_Longitude()));
+            lastMarker.showInfoWindow();
+            //draw the polyLine on map
+            gMap.addPolyline(newLine);
+        }
 
-        lastMarker.showInfoWindow();
-		//draw the polyLine on map
-		gMap.addPolyline(newLine);
+        if(liList.size()==2){
+            //create the first marker and draw it in
+            LocationInfo locationFirst = liList.get(0);
+            gMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
+                    .title("Location #1 - Start Point")
+                    .snippet("\""+ locationFirst.get_Description()+"\"")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            newLine.add(new LatLng(locationFirst.get_Latitude(),locationFirst.get_Longitude()));
+
+            //create the last marker and draw it in AZURE
+            LocationInfo locationLast = liList.get(liList.size()-1);
+            Marker lastMarker = gMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
+                    .title("Location #" + liList.size() + " - Latest Point")
+                    .snippet("\"" + locationLast.get_Description() + "\"")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            newLine.add(new LatLng(locationLast.get_Latitude(),locationLast.get_Longitude()));
+
+            lastMarker.showInfoWindow();
+            //draw the polyLine on map
+            gMap.addPolyline(newLine);
+        }
+
+        else{
+            //create the first marker and draw it in
+            LocationInfo locationFirst = liList.get(0);
+            gMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
+                    .title("Location #1 - Start Point")
+                    .snippet("\""+ locationFirst.get_Description()+"\"")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            newLine.add(new LatLng(locationFirst.get_Latitude(),locationFirst.get_Longitude()));
+
+            //draw all markers left in RED except the last one
+            int j = 1;
+            for (LocationInfo location: (liList.subList(1,(liList.size()-1)))) {
+                gMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(location.get_Latitude(), location.get_Longitude()))
+                        .title("Location #" + (j + 1))
+                        .snippet("\""+ location.get_Description()+"\""))
+                        .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                newLine.add(new LatLng(location.get_Latitude(), location.get_Longitude()));
+                ++j;
+            }
+
+            //create the last marker and draw it in AZURE
+            LocationInfo locationLast = liList.get(liList.size()-1);
+            Marker lastMarker = gMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(locationLast.get_Latitude(), locationLast.get_Longitude()))
+                    .title("Location #" + liList.size() + " - Latest Point")
+                    .snippet("\"" + locationLast.get_Description() + "\"")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            newLine.add(new LatLng(locationLast.get_Latitude(),locationLast.get_Longitude()));
+
+            lastMarker.showInfoWindow();
+            //draw the polyLine on map
+            gMap.addPolyline(newLine);
+
+        }
 	}
+
+    public void cameraShowAll(){
+        if(showZoomOutMap){
+            if (liList.size()==0){
+                LatLng cameraCtr = new LatLng(34.41,-119.84);//Goleta City
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraCtr,11));
+
+            }
+            else{
+                LatLngBounds.Builder bld = new LatLngBounds.Builder();
+                for (int i = 0; i < liList.size(); i++) {
+                    LatLng ll = new LatLng(liList.get(i).get_Latitude(), liList.get(i).get_Longitude());
+                    bld.include(ll);
+                }
+                LatLngBounds bounds = bld.build();
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 900, 1000, 70));
+                gMap.animateCamera(CameraUpdateFactory.zoomOut());
+
+            }
+            showZoomOutMap = false;
+        }
+
+    }
+
+
+
 }
 
