@@ -5,6 +5,7 @@ import android.location.Location;
 import java.io.Serializable;
 
 /**
+ * @deprecated
  *This class is responsible for storing attributes of a given recorded location, such as date/time,
  *geographic coordinates, bearing, altitude, and more.  See
  *https://developer.android.com/reference/android/location/Location.html for more information

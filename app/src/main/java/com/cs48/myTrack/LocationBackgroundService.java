@@ -48,6 +48,7 @@ public class LocationBackgroundService extends IntentService implements
 		mLocationClient = new LocationClient(this, this, this);
 		mLocationClient.connect();
 
+		// Probably don't need this anymore
 		// Set parameters for the LocationClient to use when grabbing locations
 		mLocationRequest = LocationRequest.create();
 		// Use location request accurate to about a city block
@@ -69,6 +70,7 @@ public class LocationBackgroundService extends IntentService implements
 		// @@@ NOTICE @@@ THIS WILL NOT WORK UNLESS YOU MANUALLY CHANGE trackingEnabled to true
 		// in the instance variables.  This is disabled by default so that simply having this app
 		// installed doesn't destroy your battery life
+		Log.i("LocationBackgroundService", "Connected to LocationClient");
 
 		if (trackingEnabled) {
 			if (mLocationClient.isConnected()) {
@@ -160,7 +162,7 @@ public class LocationBackgroundService extends IntentService implements
 		LocationInfo mLocationInfo = new LocationInfo(location);
 		DatabaseHelper db = new DatabaseHelper(this);
 		db.addLocation(mLocationInfo);
-		Log.i("-----", "Location added by distance");
+		Log.i("LocationBackgroundService", "Location added by distance");
 	}
 
 }

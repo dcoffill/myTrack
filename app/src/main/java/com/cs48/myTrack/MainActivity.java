@@ -210,7 +210,7 @@ public class MainActivity extends Activity implements
 		boolean trackingEnabled = false; // Change to true then compile if you want to test background tracking
 		if (trackingEnabled) {
 			alarm.setAlarm(this);
-			Log.i("@@@@@", "Tracking Enabled!");
+			Log.i("myTrack/MainActivity", "Tracking Enabled!");
 		}
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
