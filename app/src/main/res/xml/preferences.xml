@@ -6,6 +6,7 @@
 	android:summaryOn="@string/track_preference_on"
 	android:summaryOff="@string/track_preference_off"
     android:defaultValue="true" />
+
 <ListPreference
     android:dependency="pref_sync"
     android:key="pref_syncConnectionType"
@@ -13,16 +14,16 @@
     android:dialogTitle="@string/pref_syncConnectionTypes_default"
     android:entries="@array/pref_syncConnectionTypes_entries"
     android:entryValues="@array/pref_syncConnectionTypes_values"
-    android:defaultValue="@string/pref_syncConnectionTypes_default" />
+    android:defaultValue="30" />
 
-<EditTextPreference
-    android:dependency="pref_sync"
-    android:key="pref_syncConnectionType"
-    android:title="Refresh interval"
-    android:inputType="number"
-    android:dialogTitle="Enter time (minutes) to refresh"
-    android:maxLength="3"
-    android:defaultValue="10" />
+<!--<EditTextPreference-->
+    <!--android:dependency="pref_sync"-->
+    <!--android:key="pref_syncConnectionType"-->
+    <!--android:title="Refresh interval"-->
+    <!--android:inputType="number"-->
+    <!--android:dialogTitle="Enter time (minutes) to refresh"-->
+    <!--android:maxLength="3"-->
+    <!--android:defaultValue="10" />-->
 
 
 </PreferenceScreen>

@@ -7,8 +7,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -37,6 +39,8 @@ public class MainActivity extends Activity implements
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private LocationClient mLocationClient;
 	AlarmReceiver alarm = new AlarmReceiver();
+    public static final String PREFS_NAME = "MyPrefsFile";
+
 
     public Location getLocation(){
         return mLocationClient.getLastLocation();
@@ -201,17 +205,20 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
 		// Create background service
 //		mServiceIntent = new Intent(this, LocationBackgroundService.class);
 //		mServiceIntent.setData(Uri.parse("test_because_i_don't_know_what_goes_here"));
 //		this.startService(mServiceIntent);
 
-		boolean trackingEnabled = false; // Change to true then compile if you want to test background tracking
-		if (trackingEnabled) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
+		boolean trackingEnabled = settings.getBoolean("pref_sync",false); // Change to true then compile if you want to test background tracking
+        if (trackingEnabled) {
 			alarm.setAlarm(this);
+            Toast.makeText(this, "Tracking Enabled", Toast.LENGTH_SHORT).show();
 			Log.i("@@@@@", "Tracking Enabled!");
 		}
+
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -231,6 +238,7 @@ public class MainActivity extends Activity implements
         // Connect the client.
         mLocationClient.connect();
     }
+
 
     @Override
     protected void onStop() {

@@ -12,8 +12,8 @@
 	<string name="track_preference_title">Automatic Tracking</string>
 	<string name="track_preference_on">Automatic tracking</string>
 	<string name="track_preference_off">Manual tracking only</string>
-	<string name="pref_syncConnectionType">This is a ListPreference!</string>
-	<string name="pref_syncConnectionTypes_default">Presidents or something</string>
+	<string name="pref_syncConnectionType">Auto-tracking Refresh Interval</string>
+	<string name="pref_syncConnectionTypes_default">Select Interval</string>
 
     <string name="popup_hint">Add Descriptions Here</string>
     <string name="popup_cancelButtonText">Cancel</string>
@@ -23,31 +23,21 @@
 
 
     <string-array name="pref_syncConnectionTypes_entries">
-        <item>Dwight D. Eisenhower</item>
-        <item>John F. Kennedy</item>
-        <item>Lyndon B. Johnson</item>
-        <item>Richard Nixon</item>
-        <item>Gerald Ford</item>
-        <item>Jimmy Carter</item>
-        <item>Ronald Reagan</item>
-        <item>George H. W. Bush</item>
-        <item>Bill Clinton</item>
-        <item>George W. Bush</item>
-        <item>Barack Obama</item>
+        <item>15 Minutes</item>
+        <item>30 Minutes</item>
+        <item>1 Hour</item>
+        <item>Half Day</item>
+        <item>A Day</item>
+
     </string-array>
 
     <string-array name="pref_syncConnectionTypes_values">
-        <item>Dwight D. Eisenhower</item>
-        <item>John F. Kennedy</item>
-        <item>Lyndon B. Johnson</item>
-        <item>Richard Nixon</item>
-        <item>Gerald Ford</item>
-        <item>Jimmy Carter</item>
-        <item>Ronald Reagan</item>
-        <item>George H. W. Bush</item>
-        <item>Bill Clinton</item>
-        <item>George W. Bush</item>
-        <item>Barack Obama</item>
+        <item>15</item>
+        <item>30</item>
+        <item>1</item>
+        <item>Half Day</item>
+        <item>A Day</item>
+
     </string-array>
 
     <string name="title_activity_settings">Settings</string>
