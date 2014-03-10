@@ -3,12 +3,18 @@ package com.cs48.myTrack;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +54,60 @@ public class MTListFragment extends ListFragment{
 		this.refresh();
 		return mView;
 	}
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+
+
+                //create a DatabaseHelper to be used
+                DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+
+                //give the time of selected item to search for corresponding location item in the database
+                //convert date and time to milliseconds first
+                String[] splitString = ((String)(getListView().getItemAtPosition(arg2))).split(":",2);
+                //Format: 2014-03-06 14:15:35
+                String givenDateString = splitString[1];
+
+                SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date mDate = sdf.parse(givenDateString);
+                    long timeInMilliseconds = mDate.getTime();
+                    //search for the item and store its description in ListDialogTransactor.description
+                    LocationInfo tmpLocationInfo = dbHelper.getLocationByTime(timeInMilliseconds);
+                    String tmpDescription = tmpLocationInfo.get_Description();
+                    if (tmpDescription!=null){
+                        ListDialogTransactor.description = tmpDescription;
+                    } }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                TextView textView = new TextView(getActivity());
+                textView.setSingleLine(false);
+                textView.setBackgroundColor(Color.rgb(135,206,250));
+                textView.setText("\""+ListDialogTransactor.description+"\"");
+
+                PopupWindow popupWindow = new PopupWindow(textView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                popupWindow.setBackgroundDrawable(new ColorDrawable());
+
+                // Get the View's(the one that was clicked in the Fragment) location
+                int location[] = new int[2];
+                arg1.getLocationOnScreen(location);
+
+                // Using location, the PopupWindow will be displayed right under anchorView
+                popupWindow.showAtLocation(arg1, Gravity.NO_GRAVITY,
+                        location[0], location[1] + arg1.getHeight());
+                return true;
+            }
+        });
+
+    }
+
+
+
 
     @Override
     public void onListItemClick(ListView l, View v, int pos, long id) {
