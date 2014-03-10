@@ -53,6 +53,7 @@ public class MTMapFragment extends MapFragment {
 
     }
 
+    @Override
 	public void onResume() {
 		super.onResume();
 		// If gMap is currently null, reassign it

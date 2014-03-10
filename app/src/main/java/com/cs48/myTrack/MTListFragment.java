@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.content.ContextWrapper.*;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,12 +63,10 @@ public class MTListFragment extends ListFragment{
         //Format: 2014-03-06 14:15:35
         String givenDateString = splitString[1];
 
-//        Log.e("SplitString","The split string is:" + givenDateString);
         SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss");
         try {
             Date mDate = sdf.parse(givenDateString);
             long timeInMilliseconds = mDate.getTime();
-//            Log.e("timeInMilli","Time in Milli is: "+timeInMilliseconds);
             //search for the item and store its description in ListDialogTransactor.description
             LocationInfo tmpLocationInfo = dbHelper.getLocationByTime(timeInMilliseconds);
             String tmpDescription = tmpLocationInfo.get_Description();
