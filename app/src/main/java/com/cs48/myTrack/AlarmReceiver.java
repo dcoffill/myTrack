@@ -2,9 +2,11 @@ package com.cs48.myTrack;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.SystemClock;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
@@ -37,6 +39,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 		//Set an alarm to start about two minutes after starting the application
 		alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (2 * 60 * 1000), alarmIntent);
 
+		// Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes, about 2 minutes after application start
+		alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2 * 60 * 1000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+		Log.i("AlarmReceiver", "Alarm has been scheduled");
         SharedPreferences settings = context.getSharedPreferences(MainActivity.PREFS_NAME,0);
         String preferedInterval = settings.getString("pref_syncConnectionType","30");
 
@@ -70,16 +75,23 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
             Log.i("@@@@@", "Alarm has been scheduled with interval a day");
         }
 
-    }
-		// If/when we get a BootListener, we'll start it here so our AlarmManager runs on boot
+    
 
+		// Allow our background service to start itself when the device is rebooted
+		ComponentName receiver = new ComponentName(context, BootReceiver.class);
+		PackageManager pm = context.getPackageManager();
+		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+	}
 
 	public void cancelAlarm(Context context) {
 		if (alarmMgr != null) {
 			alarmMgr.cancel(alarmIntent);
 		}
-		// If/when we have a bootListener, we'll stop it here as well
 
+		// Disable our background service starting on boot if the user disables automatic tracking
+		ComponentName receiver = new ComponentName(context, BootReceiver.class);
+		PackageManager pm = context.getPackageManager();
+		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 	}
 
 }

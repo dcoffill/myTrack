@@ -41,7 +41,6 @@ public class MainActivity extends Activity implements
 	AlarmReceiver alarm = new AlarmReceiver();
     public static final String PREFS_NAME = "MyPrefsFile";
 
-
     public Location getLocation(){
         return mLocationClient.getLastLocation();
     }
@@ -217,6 +216,7 @@ public class MainActivity extends Activity implements
 			alarm.setAlarm(this);
             Toast.makeText(this, "Tracking Enabled", Toast.LENGTH_SHORT).show();
 			Log.i("@@@@@", "Tracking Enabled!");
+			Log.i("myTrack/MainActivity", "Tracking Enabled!");
 		}
 
 
