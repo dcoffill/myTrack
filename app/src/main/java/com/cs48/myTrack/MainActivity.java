@@ -211,13 +211,12 @@ public class MainActivity extends Activity implements
 //		this.startService(mServiceIntent);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
-		boolean trackingEnabled = settings.getBoolean("pref_sync",false); // Change to true then compile if you want to test background tracking
-        if (trackingEnabled) {
-			alarm.setAlarm(this);
-            Toast.makeText(this, "Tracking Enabled", Toast.LENGTH_SHORT).show();
-			Log.i("@@@@@", "Tracking Enabled!");
-			Log.i("myTrack/MainActivity", "Tracking Enabled!");
-		}
+//		boolean trackingEnabled = settings.getBoolean("pref_sync",false); // Change to true then compile if you want to test background tracking
+//        if (trackingEnabled) {
+//			//alarm.setAlarm(this);
+//            Toast.makeText(this, "Tracking Enabled", Toast.LENGTH_SHORT).show();
+//			Log.i("myTrack/MainActivity", "Tracking Enabled!");
+//		}
 
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)

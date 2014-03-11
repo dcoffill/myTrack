@@ -31,7 +31,7 @@ public class LocationBackgroundService extends IntentService implements
 	private Location mLocation;
 	private final static int
 			CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-	boolean trackingEnabled = false;  // Change this to true if you want the app to do automatic
+	boolean trackingEnabled = true;  // Change this to true if you want the app to do automatic
 	// tracking.  May destroy your battery life though, given the current state of the
 	// service, so change it back to false if you commit
 
@@ -72,11 +72,17 @@ public class LocationBackgroundService extends IntentService implements
 		// installed doesn't destroy your battery life
 		Log.i("LocationBackgroundService", "Connected to LocationClient");
 
-		if (trackingEnabled) {
-			if (mLocationClient.isConnected()) {
-				//mLocationClient.requestLocationUpdates(mLocationRequest, this);
-				LocationInfo mLocationInfo = new LocationInfo(mLocationClient.getLastLocation());
-				DatabaseHelper db = new DatabaseHelper(this);
+		if (mLocationClient.isConnected()) {
+			// Account for very rare race condition, likely caused by canceling alarm while location is being recorded
+			LocationInfo mLocationInfo;
+			try {
+				mLocationInfo = new LocationInfo(mLocationClient.getLastLocation());
+			} catch (IllegalStateException ex) {
+				ex.printStackTrace();
+				return;
+			}
+
+			DatabaseHelper db = new DatabaseHelper(this);
 
 				// If there is at least one point in the database, check to make sure that this point is at least
 				// a certain distance from the last recorded point
@@ -96,26 +102,23 @@ public class LocationBackgroundService extends IntentService implements
 						return;
 					}
 				}
-				// If there was less than 1 location in the database (new app install) or the location was not too close
-				// record the location in the database
+			// If there was less than 1 location in the database (new app install) or the location was not too close
+			// record the location in the database
 
 
-				// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
-				// special here with regards to locking
-				db.addLocation(mLocationInfo);
-				db.close();
-				// Explicitly refresh the MTMapFragment to show the new location marker
-				MTMapFragment.getInstance().refresh();
+			// It appears that SQLite is thread-safe on android, so we shouldn't have to do anything
+			// special here with regards to locking
+			db.addLocation(mLocationInfo);
+			db.close();
+			// Explicitly refresh the MTMapFragment to show the new location marker
+			MTMapFragment.getInstance().refresh();
 
-				MTListFragment.getInstance().refresh();
-				Log.i("LocationBackgroundService", "Location recorded in background");
+			MTListFragment.getInstance().refresh();
+			Log.i("LocationBackgroundService", "Location recorded in background");
 			}
-			else {
+		else {
 				Log.e("LocationBackgroundService", "Location client was not available to LocationBackgroundService");
-			}
 		}
-
-		return;
 	}
 
 	@Override
@@ -164,5 +167,4 @@ public class LocationBackgroundService extends IntentService implements
 		db.addLocation(mLocationInfo);
 		Log.i("LocationBackgroundService", "Location added by distance");
 	}
-
 }
