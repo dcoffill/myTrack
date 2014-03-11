@@ -7,7 +7,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -85,6 +84,7 @@ public class MTPopupDialogFragment extends DialogFragment {
                         MTPopupDialogFragment.this.getDialog().dismiss();
 						tmpDBHelper.close();
 						MTListFragment.getInstance().refresh();
+                        MTMapFragment.getInstance().refresh();
                         Toast.makeText(getActivity(), "Delete Location successful", Toast.LENGTH_SHORT).show();
 
                     }
@@ -107,12 +107,11 @@ public class MTPopupDialogFragment extends DialogFragment {
                             locationInfo = new LocationInfo(ListDialogTransactor.locationInfo.getTime(),
                                     ListDialogTransactor.locationInfo.get_Latitude(),ListDialogTransactor.locationInfo.get_Longitude(),
                                     ListDialogTransactor.description);
-                            Log.e("addClick","Description:"+locationInfo.get_Description()+"time:"+locationInfo.getTime());
                         }
 
                         tmpDBHelper.updateLocation(locationInfo);
 						tmpDBHelper.close();
-
+                        MTMapFragment.getInstance().refresh();
                         MTPopupDialogFragment.this.getDialog().dismiss();
 
                     }

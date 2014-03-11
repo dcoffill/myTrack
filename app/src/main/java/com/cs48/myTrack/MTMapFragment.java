@@ -1,5 +1,6 @@
 package com.cs48.myTrack;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +45,34 @@ public class MTMapFragment extends MapFragment {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
         context = getActivity();
+        gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                DatabaseHelper dh = new DatabaseHelper(context);
+                List<LocationInfo> locationInfoList =  dh.getAllLocations();
+                dh.close();
+                if (marker.getTitle().contains("-")){
+                    String[] splitString = marker.getTitle().split("-", 2);
+                    ListDialogTransactor.itemNum = Integer.parseInt(splitString[0].substring(10,splitString[0].length()-1));
+
+
+                }
+                else {
+                    ListDialogTransactor.itemNum = Integer.parseInt(marker.getTitle().substring(10,marker.getTitle().length()));
+                }
+                String mDescription = locationInfoList.get(ListDialogTransactor.itemNum-1).get_Description();
+                ListDialogTransactor.description = mDescription;
+
+                ListDialogTransactor.locationInfo = locationInfoList.get(ListDialogTransactor.itemNum-1);
+
+
+                FragmentManager mManager = getFragmentManager();
+                MTPopupDialogFragment mPopupDialogFragment = new MTPopupDialogFragment();
+                mPopupDialogFragment.show(mManager,"popupDialog");
+            }
+        });
+
+
         this.refresh();
         showZoomOutMap = true;
         this.cameraShowAll();
@@ -104,7 +133,6 @@ public class MTMapFragment extends MapFragment {
 		// Get locations (currently fetches all recorded locations)
 		DatabaseHelper dh = new DatabaseHelper(context);
 		liList= dh.getAllLocations();
-		dh.close();
 		dh.close();
 
 		//create a polyLine and add each marker as points on the line
@@ -203,7 +231,7 @@ public class MTMapFragment extends MapFragment {
                     bld.include(ll);
                 }
                 LatLngBounds bounds = bld.build();
-                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 900, 1000, 70));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 1000, 1000, 70));
                 gMap.animateCamera(CameraUpdateFactory.zoomOut());
 
             }
