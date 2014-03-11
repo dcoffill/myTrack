@@ -105,7 +105,6 @@ public class MTMapFragment extends MapFragment {
 		DatabaseHelper dh = new DatabaseHelper(context);
 		liList= dh.getAllLocations();
 		dh.close();
-		dh.close();
 
 		//create a polyLine and add each marker as points on the line
 		PolylineOptions newLine = new PolylineOptions();
@@ -113,7 +112,7 @@ public class MTMapFragment extends MapFragment {
         if(liList.isEmpty()){
         }
 
-        if (liList.size()==1){
+        else if (liList.size()==1){
             LocationInfo locationFirst = liList.get(0);
             Marker lastMarker = gMap.addMarker(new MarkerOptions()
                     .position(new LatLng(locationFirst.get_Latitude(), locationFirst.get_Longitude()))
@@ -127,7 +126,7 @@ public class MTMapFragment extends MapFragment {
             gMap.addPolyline(newLine);
         }
 
-        if(liList.size()==2){
+        else if(liList.size()==2){
             //create the first marker and draw it in
             LocationInfo locationFirst = liList.get(0);
             gMap.addMarker(new MarkerOptions()
