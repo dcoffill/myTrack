@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 <SwitchPreference
-    android:key="pref_sync"
+    android:key="pref_trackingEnabled"
     android:title="@string/track_preference_title"
 	android:summaryOn="@string/track_preference_on"
 	android:summaryOff="@string/track_preference_off"
     android:defaultValue="true" />
 
 <ListPreference
-    android:dependency="pref_sync"
-    android:key="pref_syncConnectionType"
-    android:title="@string/pref_syncConnectionType"
-    android:dialogTitle="@string/pref_syncConnectionTypes_default"
-    android:entries="@array/pref_syncConnectionTypes_entries"
-    android:entryValues="@array/pref_syncConnectionTypes_values"
+    android:dependency="pref_trackingEnabled"
+    android:key="pref_refreshInterval"
+    android:title="@string/pref_refreshInterval_title"
+    android:dialogTitle="@string/pref_refreshInterval_dialog_title"
+    android:entries="@array/pref_refreshInterval_entries"
+    android:entryValues="@array/pref_refreshInterval_values"
     android:defaultValue="30" />
 
 <!--<EditTextPreference-->

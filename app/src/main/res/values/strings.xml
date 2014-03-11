@@ -12,8 +12,13 @@
 	<string name="track_preference_title">Automatic Tracking</string>
 	<string name="track_preference_on">Automatic tracking</string>
 	<string name="track_preference_off">Manual tracking only</string>
-	<string name="pref_syncConnectionType">Auto-tracking Refresh Interval</string>
-	<string name="pref_syncConnectionTypes_default">Select Interval</string>
+	<string name="pref_refreshInterval_title">Auto-tracking Refresh Interval</string>
+	<string name="pref_refreshInterval_dialog_title">Select Interval</string>
+
+
+	<!--<string name="pref_syncConnectionType">Auto-tracking Refresh Interval</string>-->
+	<!--<string name="pref_syncConnectionTypes_default">Select Interval</string>-->
+
 
     <string name="popup_hint">Add Descriptions Here</string>
     <string name="popup_cancelButtonText">Cancel</string>
@@ -22,7 +27,7 @@
     <string name="popup_title">Add Description/Delete Location</string>
 
 
-    <string-array name="pref_syncConnectionTypes_entries">
+    <string-array name="pref_refreshInterval_entries">
         <item>15 Minutes</item>
         <item>30 Minutes</item>
         <item>1 Hour</item>
@@ -31,7 +36,7 @@
 
     </string-array>
 
-    <string-array name="pref_syncConnectionTypes_values">
+    <string-array name="pref_refreshInterval_values">
         <item>15</item>
         <item>30</item>
         <item>1</item>
