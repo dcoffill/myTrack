@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.mtp.MtpDeviceInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,7 +101,7 @@ public class MTPopupDialogFragment extends DialogFragment {
                             locationInfo = new LocationInfo(ListDialogTransactor.locationInfo.getTime(),
                                     ListDialogTransactor.locationInfo.get_Latitude(),ListDialogTransactor.locationInfo.get_Longitude(),
                                     newDescription);
-                            Log.e("addClick","Description:"+locationInfo.get_Description()+"time:"+locationInfo.getTime());
+                            Toast.makeText(getActivity(), "Add descriptions successful", Toast.LENGTH_SHORT).show();
                         }
                         else{
                             locationInfo = new LocationInfo(ListDialogTransactor.locationInfo.getTime(),
@@ -115,7 +114,7 @@ public class MTPopupDialogFragment extends DialogFragment {
 						tmpDBHelper.close();
 
                         MTPopupDialogFragment.this.getDialog().dismiss();
-                        Toast.makeText(getActivity(), "Add descriptions successful", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
