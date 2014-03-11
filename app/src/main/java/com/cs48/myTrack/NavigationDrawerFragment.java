@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -175,7 +176,8 @@ public class NavigationDrawerFragment extends Fragment {
             }
         };
 
-        // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
+
+		// If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
             mDrawerLayout.openDrawer(mFragmentContainerView);
@@ -276,6 +278,18 @@ public class NavigationDrawerFragment extends Fragment {
             }
             return true;
         }
+		else if (item.getItemId() == R.id.action_export) {
+			FileExporter fileExporter = new FileExporter();
+			boolean result = fileExporter.exportKML(getActivity());
+			if (result == true) {
+				// successful file write
+				Toast.makeText(getActivity(), "Data exported to " + Environment.DIRECTORY_DOCUMENTS, Toast.LENGTH_SHORT).show();
+			}
+			else {
+				// unsuccessful file export
+				Toast.makeText(getActivity(), "Export failed, unable to write to " + Environment.DIRECTORY_DOCUMENTS, Toast.LENGTH_SHORT).show();
+			}
+		}
 
         return super.onOptionsItemSelected(item);
     }
