@@ -43,7 +43,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 		alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2 * 60 * 1000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
 		Log.i("AlarmReceiver", "Alarm has been scheduled");
         SharedPreferences settings = context.getSharedPreferences(MainActivity.PREFS_NAME,0);
-        String preferedInterval = settings.getString("pref_syncConnectionType","30");
+        String preferedInterval = settings.getString("pref_","30");
 
         if (preferedInterval.equals("15")){
             // Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes
