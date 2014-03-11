@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
@@ -36,46 +37,44 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 		Intent intent = new Intent(context, AlarmReceiver.class);
 		alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-		//Set an alarm to start about two minutes after starting the application
-		alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (2 * 60 * 1000), alarmIntent);
-
-		// Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes, about 2 minutes after application start
-		alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2 * 60 * 1000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+		// Set the System Alarm manager service to to launch the AlarmReceiver according to user preference, about 2 minutes after application start
 		Log.i("AlarmReceiver", "Alarm has been scheduled");
-        SharedPreferences settings = context.getSharedPreferences(MainActivity.PREFS_NAME,0);
-        String preferedInterval = settings.getString("pref_","30");
+//        SharedPreferences settings = context.getSharedPreferences(MainActivity.PREFS_NAME,0);
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+		String preferredInterval = settings.getString("pref_refreshInterval","30");
 
-        if (preferedInterval.equals("15")){
+        if (preferredInterval.equals("15")){
             // Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 120000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
             Log.i("@@@@@", "Alarm has been scheduled with interval 15 minutes");
         }
 
-        if (preferedInterval.equals("30")){
+        if (preferredInterval.equals("30")){
             // Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 120000, AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
             Log.i("@@@@@", "Alarm has been scheduled with interval 30 minutes");
         }
 
-        if (preferedInterval.equals("1")){
+        if (preferredInterval.equals("1")){
             // Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 120000, AlarmManager.INTERVAL_HOUR, alarmIntent);
             Log.i("@@@@@", "Alarm has been scheduled with interval 1 hour");
         }
 
-        if (preferedInterval.equals("Half Day")){
+        if (preferredInterval.equals("Half Day")){
             // Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 120000, AlarmManager.INTERVAL_HALF_DAY, alarmIntent);
             Log.i("@@@@@", "Alarm has been scheduled with interval half day");
         }
 
-        if (preferedInterval.equals("A Day")){
+        if (preferredInterval.equals("A Day")){
             // Set the System Alarm manager service to to launch the AlarmReceiver about every 15 minutes
             alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 120000, AlarmManager.INTERVAL_DAY, alarmIntent);
             Log.i("@@@@@", "Alarm has been scheduled with interval a day");
         }
+		Log.i("myTrack/AlarmReceiver", "Alarm scheduled with interval of " + preferredInterval);
 
-    
+
 
 		// Allow our background service to start itself when the device is rebooted
 		ComponentName receiver = new ComponentName(context, BootReceiver.class);

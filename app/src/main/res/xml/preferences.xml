@@ -5,7 +5,8 @@
     android:title="@string/track_preference_title"
 	android:summaryOn="@string/track_preference_on"
 	android:summaryOff="@string/track_preference_off"
-    android:defaultValue="true" />
+	android:persistent="true"
+    android:defaultValue="false" />
 
 <ListPreference
     android:dependency="pref_trackingEnabled"
@@ -14,7 +15,8 @@
     android:dialogTitle="@string/pref_refreshInterval_dialog_title"
     android:entries="@array/pref_refreshInterval_entries"
     android:entryValues="@array/pref_refreshInterval_values"
-    android:defaultValue="30" />
+	android:persistent="true"
+    android:defaultValue="1" />
 
 <!--<EditTextPreference-->
     <!--android:dependency="pref_sync"-->
