@@ -38,7 +38,6 @@ public class MainActivity extends Activity implements
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private LocationClient mLocationClient;
-	AlarmReceiver alarm = new AlarmReceiver();
     public static final String PREFS_NAME = "MyPrefsFile";
 
     public Location getLocation(){
@@ -48,8 +47,6 @@ public class MainActivity extends Activity implements
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-
-	private Intent mServiceIntent;
 
     // Global constants
     /*
@@ -205,19 +202,12 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
-		// Create background service
-//		mServiceIntent = new Intent(this, LocationBackgroundService.class);
-//		mServiceIntent.setData(Uri.parse("test_because_i_don't_know_what_goes_here"));
-//		this.startService(mServiceIntent);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
-//		boolean trackingEnabled = settings.getBoolean("pref_sync",false); // Change to true then compile if you want to test background tracking
-//        if (trackingEnabled) {
-//			//alarm.setAlarm(this);
-//            Toast.makeText(this, "Tracking Enabled", Toast.LENGTH_SHORT).show();
-//			Log.i("myTrack/MainActivity", "Tracking Enabled!");
-//		}
-
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getBoolean("pref_trackingEnabled",false)) { // See if automatic tracking is enabled
+            Toast.makeText(this, "Tracking Enabled", Toast.LENGTH_SHORT).show();
+			Log.i("myTrack/MainActivity", "Tracking Enabled!");
+		}
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -248,10 +238,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-//        String myStringArray [] = new String[60];//{"Location Info1","Location Info2","Location Info3","Location Info4","Location Info5","Location Info6","Location Info7","Location Info8","Location Info9","Location Info10","Location Info","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4","Location Info4"};
-//        for(int i=0;i<60;i++)
-//            myStringArray[i]="Location Info"+(i+1);
-
 
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
@@ -267,41 +253,17 @@ public class MainActivity extends Activity implements
 
                 break;
             case 1:
-//                // Get data from the database and store them in an ArrayList
-//                DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
-//                List<LocationInfo> locationInfoList =  dbHelper.getAllLocations();
-//                Collections.reverse(locationInfoList);
-//                ArrayList<String> myListTitles = new ArrayList<String>();
-//                int tmpInt = 0;
-//                for(LocationInfo locInfo:locationInfoList){
-//                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    String dateString = formatter.format(new Date(locInfo.getTime()));
-//                    String tmpStr = "Location #"+(locationInfoList.size()-tmpInt)+": "+dateString;
-////                  tmpStr = "Latitude: "+(locInfo.get_Latitude().toString())+"\nLongitude: "+(locInfo.get_Longitude().toString());
-//                    myListTitles.add(tmpStr);
-//                    ++tmpInt;
-//                }
-
-                //Create a ListFragment
+                //Create a ListFragment and make it the active fragment
                 MTListFragment myList = MTListFragment.getInstance();
-				//myList.refresh();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, myList)
                         .commit();
                 mTitle = getString(R.string.title_section2);
 
                 break;
-//            case 2:
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-//                        .commit();
-//                mTitle = getString(R.string.title_section3);
             default:
                 break;
         }
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-//                .commit();
     }
 
     public void onSectionAttached(int number) {
@@ -353,7 +315,7 @@ public class MainActivity extends Activity implements
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * A placeholder fragment containing a simple view.  MainActivity might need it, so we'll keep it for now
 	 * @deprecated
      */
     public static class PlaceholderFragment extends Fragment {
