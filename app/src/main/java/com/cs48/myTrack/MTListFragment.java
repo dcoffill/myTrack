@@ -3,18 +3,18 @@ package com.cs48.myTrack;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,51 +58,130 @@ public class MTListFragment extends ListFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+//
+//
+//                //create a DatabaseHelper to be used
+//                DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+//
+//                //give the time of selected item to search for corresponding location item in the database
+//                //convert date and time to milliseconds first
+//                String[] splitString = ((String)(getListView().getItemAtPosition(arg2))).split(":",2);
+//                //Format: 2014-03-06 14:15:35
+//                String givenDateString = splitString[1];
+//
+//                SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss");
+//                try {
+//                    Date mDate = sdf.parse(givenDateString);
+//                    long timeInMilliseconds = mDate.getTime();
+//                    //search for the item and store its description in ListDialogTransactor.description
+//                    LocationInfo tmpLocationInfo = dbHelper.getLocationByTime(timeInMilliseconds);
+//                    String tmpDescription = tmpLocationInfo.get_Description();
+//                    if (tmpDescription!=null){
+//                        ListDialogTransactor.description = tmpDescription;
+//                    } }catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                TextView textView = new TextView(getActivity());
+//                textView.setSingleLine(false);
+//                textView.setBackgroundColor(Color.rgb(135,206,250));
+//                textView.setText("\""+ListDialogTransactor.description+"\"");
+//
+//                PopupWindow popupWindow = new PopupWindow(textView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//                popupWindow.setBackgroundDrawable(new ColorDrawable());
+//
+//                // Get the View's(the one that was clicked in the Fragment) location
+//                int location[] = new int[2];
+//                arg1.getLocationOnScreen(location);
+//
+//        // Using location, the PopupWindow will be displayed right under anchorView
+//        popupWindow.showAtLocation(arg1, Gravity.NO_GRAVITY,
+//                location[0], location[1] + arg1.getHeight());
+//        return true;
+//    }
+//});
+
+
+        final ListView listView = getListView();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setSelector(R.drawable.list_selector);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position,
+                                                  long id, boolean checked) {
+                // Here you can do something when items are selected/de-selected,
+                // such as update the title in the CAB
+
+                int count = listView.getCheckedItemCount();
+                mode.setTitle(count + " items selected");
+
+            }
 
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // Respond to clicks on the actions in the CAB
+                switch (item.getItemId()) {
+                    case R.id.menu_delete:
+                        //deleteSelectedItems();
+                        int cntChoice = listView.getCount();
 
+                        ArrayList<String> checked = new ArrayList<String>();
+                        SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
+                        for (int i = 0; i < cntChoice; i++) {
+                            if (sparseBooleanArray.get(i) == true)
+                                checked.add(listView.getItemAtPosition(i).toString());
+                        }
+                        DatabaseHelper dbH = new DatabaseHelper(getActivity());
+                        for (String tmpString : checked) {
+                            String[] splitString = tmpString.split(":", 2);
+                            //Format: 2014-03-06 14:15:35
+                            String givenDateString = splitString[1];
 
-                //create a DatabaseHelper to be used
-                DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+                            SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss");
+                            try {
+                                Date mDate = sdf.parse(givenDateString);
+                                long timeInMilliseconds = mDate.getTime();
+                                //search for the item and store its description in ListDialogTransactor.description
+                                LocationInfo tmpLocationInfo = dbH.getLocationByTime(timeInMilliseconds);
+                                dbH.deleteLocation(String.valueOf(tmpLocationInfo.getTime()));
+                                getInstance().refresh();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-                //give the time of selected item to search for corresponding location item in the database
-                //convert date and time to milliseconds first
-                String[] splitString = ((String)(getListView().getItemAtPosition(arg2))).split(":",2);
-                //Format: 2014-03-06 14:15:35
-                String givenDateString = splitString[1];
-
-                SimpleDateFormat sdf = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss");
-                try {
-                    Date mDate = sdf.parse(givenDateString);
-                    long timeInMilliseconds = mDate.getTime();
-                    //search for the item and store its description in ListDialogTransactor.description
-                    LocationInfo tmpLocationInfo = dbHelper.getLocationByTime(timeInMilliseconds);
-                    String tmpDescription = tmpLocationInfo.get_Description();
-                    if (tmpDescription!=null){
-                        ListDialogTransactor.description = tmpDescription;
-                    } }catch (ParseException e) {
-                    e.printStackTrace();
+                        mode.finish(); // Action picked, so close the CAB
+                        return true;
+                    default:
+                        return false;
                 }
-                TextView textView = new TextView(getActivity());
-                textView.setSingleLine(false);
-                textView.setBackgroundColor(Color.rgb(135,206,250));
-                textView.setText("\""+ListDialogTransactor.description+"\"");
+            }
 
-                PopupWindow popupWindow = new PopupWindow(textView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                popupWindow.setBackgroundDrawable(new ColorDrawable());
-
-                // Get the View's(the one that was clicked in the Fragment) location
-                int location[] = new int[2];
-                arg1.getLocationOnScreen(location);
-
-                // Using location, the PopupWindow will be displayed right under anchorView
-                popupWindow.showAtLocation(arg1, Gravity.NO_GRAVITY,
-                        location[0], location[1] + arg1.getHeight());
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // Inflate the menu for the CAB
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.context_main, menu);
                 return true;
             }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // Here you can make any necessary updates to the activity when
+                // the CAB is removed. By default, selected items are deselected/unchecked.
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // Here you can perform updates to the CAB due to
+                // an invalidate() request
+                return false;
+            }
         });
+
 
     }
 
@@ -143,7 +222,7 @@ public class MTListFragment extends ListFragment{
         }catch (ParseException e) {
             e.printStackTrace();
         }
-
+        dbHelper.close();
 
             FragmentManager mManager = getFragmentManager();
         MTPopupDialogFragment mPopupDialogFragment = new MTPopupDialogFragment();
