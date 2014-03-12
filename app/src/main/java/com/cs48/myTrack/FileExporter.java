@@ -24,7 +24,8 @@ public class FileExporter {
 			// If the sdcard isn't mounted as readable, quit without doing anything
 			return false;
 		}
-		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+		//File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+		File path = new File(Environment.getExternalStorageDirectory().toString() + "/myTrack/");
 		if (!path.exists()) {
 			path.mkdir();
 		}

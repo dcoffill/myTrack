@@ -289,11 +289,11 @@ public class NavigationDrawerFragment extends Fragment {
 			boolean result = fileExporter.exportKML(getActivity());
 			if (result == true) {
 				// successful file write
-				Toast.makeText(getActivity(), "Data exported to " + Environment.DIRECTORY_DOCUMENTS, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Data exported to external storage", Toast.LENGTH_SHORT).show();
 			}
 			else {
 				// unsuccessful file export
-				Toast.makeText(getActivity(), "Export failed, unable to write to " + Environment.DIRECTORY_DOCUMENTS, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Export failed, could not write to external storage", Toast.LENGTH_SHORT).show();
 			}
 		}
 
