@@ -8,8 +8,11 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +30,9 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+
 
 public class MainActivity extends Activity implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -40,6 +46,10 @@ public class MainActivity extends Activity implements
     private LocationClient mLocationClient;
 	AlarmReceiver alarm = new AlarmReceiver();
     public static final String PREFS_NAME = "MyPrefsFile";
+
+    private static final int REQUEST_CODE_CAPTURE_CAMEIA = 3023;
+    private static final int REQUEST_CODE_PICK_IMAGE = 3021;
+    private String stringUri;
 
     public Location getLocation(){
         return mLocationClient.getLastLocation();
@@ -83,26 +93,31 @@ public class MainActivity extends Activity implements
      * Handle results returned to the FragmentActivity
      * by Google Play services
      */
-    @Override
+/*    @Override
     protected void onActivityResult(
             int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.e("CheckPoint:","IN onActivityResult Main");
         // Decide what to do based on the original request code
         switch (requestCode) {
 
             case CONNECTION_FAILURE_RESOLUTION_REQUEST :
-            /*
+            *//*
              * If the result code is Activity.RESULT_OK, try
              * to connect again
-             */
+             *//*
                 switch (resultCode) {
                     case Activity.RESULT_OK :
-                    /*
+                    *//*
                      * Try the request again
-                     */
+                     *//*
                         break;
                 }
+            case REQUEST_CODE_PICK_IMAGE:
+                Uri uri = data.getData();
+                Log.i("empty:","Uri is "+uri);
         }
-    }
+    }*/
 
     public boolean servicesConnected() {
         // Check that Google Play services is available
@@ -394,6 +409,77 @@ public class MainActivity extends Activity implements
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+
+    public void getImageFromAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Log.e("CheckPoint:","IN getImageFromAlbum");
+        //intent.setType("image");//image type
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+        Log.e("CheckPoint:","IN getImageFromAlbum2");
+        /*Intent intent = new Intent();
+        intent.setType("image*//*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), REQUEST_CODE_PICK_IMAGE);*/
+    }
+
+    protected void getImageFromCamera() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+            startActivityForResult(getImageByCamera, REQUEST_CODE_CAPTURE_CAMEIA);
+        }
+        else {
+            Toast.makeText(this, "Where is your SD card?", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.e("CheckPoint:","IN onActivityResult Main");
+        if (requestCode == REQUEST_CODE_PICK_IMAGE) {
+            Uri uri = data.getData();
+            Log.i("empty:","Uri is "+uri);
+            //stringUri = uri.getEncodedPath();
+            stringUri = uri.toString();
+            Log.e("CheckPoint:","stringUri:"+stringUri);
+            //stringUri = uri.getPath();
+            //to do find the path of pic by uri
+
+        } else if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA ) {
+            Uri uri = data.getData();
+            stringUri = uri.toString();
+            if(uri == null){
+               /* //use bundle to get data
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    Bitmap  photo = (Bitmap) bundle.get("data"); //get bitmap
+                    saveImage(photo,spath);
+                } else {
+                    Toast.makeText(getActivity(), "err****", Toast.LENGTH_LONG).show();
+                    return;*/
+                }
+            }else{
+                //to do find the path of pic by uri
+            }
+        }
+
+
+    public static boolean saveImage(Bitmap photo, String spath) {
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(
+                    new FileOutputStream(spath, false));
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 
 }

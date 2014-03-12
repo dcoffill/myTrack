@@ -5,8 +5,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+
 public class MTPopupDialogFragment extends DialogFragment {
+
+    private static final int REQUEST_CODE_CAPTURE_CAMEIA = 3023;
+    private static final int REQUEST_CODE_PICK_IMAGE = 3021;
+    private String stringUri;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -71,8 +85,10 @@ public class MTPopupDialogFragment extends DialogFragment {
                 // Add action buttons
                 .setNegativeButton(R.string.popup_cancelButtonText, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        getImageFromAlbum();
                         MTPopupDialogFragment.this.getDialog().cancel();
 						tmpDBHelper.close();
+                        Toast.makeText(getActivity(), "Image added to Database", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNeutralButton(R.string.popup_deleteButtonText, new DialogInterface.OnClickListener() {
@@ -135,6 +151,17 @@ public class MTPopupDialogFragment extends DialogFragment {
         ListDialogTransactor.reset();
     }
 
-
+    public void getImageFromAlbum() {
+        Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Log.e("CheckPoint:","IN getImageFromAlbum");
+        //intent.setType("image");//image type
+        getActivity().startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+        Log.e("CheckPoint:","IN getImageFromAlbum2");
+        /*Intent intent = new Intent();
+        intent.setType("image");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), REQUEST_CODE_PICK_IMAGE);*/
+    }
 
 }
