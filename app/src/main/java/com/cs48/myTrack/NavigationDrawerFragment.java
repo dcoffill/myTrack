@@ -256,6 +256,12 @@ public class NavigationDrawerFragment extends Fragment {
         if (item.getItemId() == R.id.action_example) {
             //might be a problem here by getActivity()
             mCurrentLocation = ((MainActivity)getActivity()).getLocation();
+
+			// Fix nasty force close if getLocation() returns false
+			if (mCurrentLocation == null) {
+				Toast.makeText(getActivity(), "Error: unable to record location", Toast.LENGTH_LONG).show();
+				return true;
+			}
             LocationInfo mLocationInfo = new LocationInfo(mCurrentLocation);
             String timeMilli= String.valueOf(mLocationInfo.getTime());
             mLocationInfo.setTime(Long.parseLong(timeMilli.substring(0,(timeMilli.length()-3))+"000"));

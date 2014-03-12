@@ -76,11 +76,19 @@ public class LocationBackgroundService extends IntentService implements
 			// Account for very rare race condition, likely caused by canceling alarm while location is being recorded
 			LocationInfo mLocationInfo;
 			try {
-				mLocationInfo = new LocationInfo(mLocationClient.getLastLocation());
+				// Try to get location
+				mLocation = mLocationClient.getLastLocation();
 			} catch (IllegalStateException ex) {
 				ex.printStackTrace();
 				return;
 			}
+
+			if (mLocation == null) {
+				// In other unlikely event that getLastLocation() returns null, don't try to record anything
+				return;
+			}
+			mLocationInfo = new LocationInfo(mLocation);
+
 
 			DatabaseHelper db = new DatabaseHelper(this);
 
