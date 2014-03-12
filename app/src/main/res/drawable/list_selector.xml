@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--&lt;!&ndash;android:exitFadeDuration="@android:integer/config_mediumAnimTime">&ndash;&gt;-->
 
-    <item android:drawable="@android:color/holo_blue_dark" android:state_pressed="true"/>
-    <item android:drawable="@android:color/holo_green_dark" android:state_selected="true"/>
-    <item android:drawable="@android:color/holo_blue_light" android:state_activated="true"/>
+    <!--&lt;!&ndash;<item android:drawable="@android:color/holo_blue_dark" android:state_pressed="true"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item android:drawable="@android:color/holo_green_dark" android:state_selected="true"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item android:drawable="@android:color/holo_blue_dark" android:state_activated="true"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item android:drawable="@android:color/holo_blue_dark" android:state_checked="true"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<item android:drawable="@android:color/background_light"/>&ndash;&gt;-->
+
+    <item android:drawable="@color/holo_light_background" android:state_activated="false"/>
+    <item android:drawable="@color/holo_light_selected" android:state_checked="true"/>
+    <item android:drawable="@color/holo_light_selected" android:state_selected="true"/>
+    <item android:drawable="@color/holo_light_background" android:state_pressed="true"/>
+    <item android:drawable="@color/holo_light_background"/>
+
 
 </selector>
