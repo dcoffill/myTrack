@@ -8,7 +8,7 @@
     <!--&lt;!&ndash;<item android:drawable="@android:color/holo_blue_dark" android:state_checked="true"/>&ndash;&gt;-->
     <!--&lt;!&ndash;<item android:drawable="@android:color/background_light"/>&ndash;&gt;-->
 
-    <item android:drawable="@color/holo_light_background" android:state_activated="false"/>
+    <item android:drawable="@color/holo_light_selected" android:state_activated="true"/>
     <item android:drawable="@color/holo_light_selected" android:state_checked="true"/>
     <item android:drawable="@color/holo_light_selected" android:state_selected="true"/>
     <item android:drawable="@color/holo_light_background" android:state_pressed="true"/>
