@@ -22,7 +22,7 @@ Alternatively, if you do not wish to build the application yourself, there is a 
 
 Known Bugs
 ----------
-* MTMapFragment and MyListFragment do not refresh on their own.  If new locations are added while viewing a fragment which displays locations, the fragment will not display the additional recorded location(s) until it is reloaded.  You can force the fragment to reload (and subsequently display any new locations) by reloading the application, switching to another application and switching back, or switching between other activities/fragments within the application.
+* When using the contextual action bar in MTLocationList ("History" from within our application), which is triggered by tapping and holding on a given item, items are not highlighted when selected.
 
 
 Resource links
@@ -38,6 +38,15 @@ See Also
 --------
 
 For more information on the various elements used in our application, as well as example code, see the following links.
+
+Android AlarmManager (responsible for scheduling background tasks)
+- https://developer.android.com/reference/android/app/AlarmManager.html
+
+Android IntentService (background service)
+- https://developer.android.com/reference/android/app/IntentService.html
+
+KML (file format used when exporting from the database)
+- https://developers.google.com/kml/documentation/
 
 SQLite Relational Database:
 - https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
