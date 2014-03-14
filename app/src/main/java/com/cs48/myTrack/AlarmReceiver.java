@@ -32,6 +32,10 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 		startWakefulService(context, service);
 	}
 
+	/**
+	 * Set the background service to automatically track at a specified interval
+	 * @param context
+	 */
 	public void setAlarm(Context context) {
 		alarmMgr =(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, AlarmReceiver.class);
@@ -82,6 +86,10 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 		pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 	}
 
+	/**
+	 * Disable the background tracking service from running at a specified interval
+	 * @param context
+	 */
 	public void cancelAlarm(Context context) {
 		if (alarmMgr != null) {
 			alarmMgr.cancel(alarmIntent);

@@ -40,7 +40,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 	 * changes to the application's behavior as a result
 	 *
 	 * @param sharedPreferences A SharedPreferences reference
-	 * @param key
+	 * @param key the key to use for the SharedPreferences
 	 */
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

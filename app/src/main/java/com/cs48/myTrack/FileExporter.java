@@ -18,13 +18,17 @@ import java.util.TimeZone;
  * A class responsible for handling file export from the application to industry standard file formats
  */
 public class FileExporter {
-	// Get
+
+	/**
+	 * Exports all locations into a KML formatted XML document
+	 * @param context
+	 * @return true if the operation completed successfully, false if it failed
+	 */
 	public boolean exportKML(Context context) {
 		if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			// If the sdcard isn't mounted as readable, quit without doing anything
 			return false;
 		}
-		//File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
 		File path = new File(Environment.getExternalStorageDirectory().toString() + "/myTrack/");
 		if (!path.exists()) {
 			path.mkdir();
@@ -37,7 +41,7 @@ public class FileExporter {
 		DateFormat fileFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
 		df.setTimeZone(tz);
 		fileFormat.setTimeZone(tz);
-		//String fileName = df.format(Calendar.getInstance().getTimeInMillis());
+
 		String fileName = fileFormat.format(Calendar.getInstance().getTimeInMillis());
 		File outfile = new File(path, fileName + "-myTrack.kml");
 		Log.i("myTrack/FileExporter", "Writing file to " + path + fileName);
@@ -45,7 +49,7 @@ public class FileExporter {
 		try {
 			FileWriter fileWriter = new FileWriter(outfile);
 			BufferedWriter writer = new BufferedWriter(fileWriter);
-			// Currently gets all locations, in future should respect user's current time range preferences
+			// Currently gets all locations, in future could perhaps respect user's current time range preferences
 			List<LocationInfo> locationList = databaseHelper.getAllLocations();
 
 			//Write KML header

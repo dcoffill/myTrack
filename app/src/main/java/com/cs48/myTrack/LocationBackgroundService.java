@@ -15,9 +15,6 @@ import com.google.android.gms.location.LocationRequest;
 
 /**
  * Created by david on 2/23/14
- * This is really bad, since it claims to implement several interfaces and then proceeds to not
- * do so.  But for now it's okay.
- *
  * This class is a background service that runs in the background, and records the location when
  * it is invoked.
  */

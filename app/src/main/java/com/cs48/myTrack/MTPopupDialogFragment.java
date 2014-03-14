@@ -14,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * A fragment responsible for managing a particular location selected by the user (allows deletion
+ * of a location as well as the addition of a text description
+ */
+
 public class MTPopupDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

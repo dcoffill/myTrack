@@ -12,6 +12,11 @@ import android.util.Log;
 public class BootReceiver extends BroadcastReceiver {
 	AlarmReceiver alarm = new AlarmReceiver();
 
+	/**
+	 * This method runs when it the device boots (and auto-tracking is enabled in the SharedPreferences).
+	 * @param context
+	 * @param intent
+	 */
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
