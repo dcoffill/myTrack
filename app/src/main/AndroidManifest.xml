@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBHYN7rUufyftUNp9aDFoanZGQBMmlB7Zo"/>
+            android:value="@string/maps_api_key"/>
 
 		<receiver android:name="com.cs48.myTrack.AlarmReceiver"
 			android:enabled="true"/>
