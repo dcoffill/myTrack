@@ -27,3 +27,6 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# File containing API key
+app/src/main/res/values/keys.xml
