@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Make a copy of this file called "keys.xml" and replace the string of "x"s with the actual
-maps API key (which should NEVER be committed to Git!!!) -->
+<!--Make a copy of this file called "keys.xml", and change the name of the
+string resource below to "maps_api_key". Then replace the string of "x"s with
+the actual maps API key (which should NEVER be committed to Git!!!) -->
 <resources>
-	<string name="maps_api_key">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</string>
+	<string name="maps_api_key_template">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</string>
 </resources>
