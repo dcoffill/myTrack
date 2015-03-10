@@ -23,6 +23,7 @@ Alternatively, if you do not wish to build the application yourself, there is a 
 Known Bugs
 ----------
 * When using the contextual action bar in MTLocationList ("History" from within our application), which is triggered by tapping and holding on a given item, items are not highlighted when selected.
+* You tell me!
 
 
 Resource links
